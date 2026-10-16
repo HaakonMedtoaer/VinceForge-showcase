@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: Vince Platform API
+  version: "1.0"
+  description: |
+    Unofficial OpenAPI description of the Vince Platform API (vincesoftware.com),
+    built for use as a low-token reference in Claude Code / agentic coding tools.
+
+    SOURCE & CONFIDENCE NOTES (read before trusting this file):
+    - Sections marked CONFIRMED were verified against the live vincesoftware.com
+      product documentation (Access Management page) on 2026-08-24.
+    - Sections marked PLACEHOLDER are inferred only from the doc site's navigation,
+      which lists these as top-level "Vince Platform API's" categories:
+      Common features, Custom Tables, Tags, Tenant, Utils, Workflows, Variables,
+      Schedules, Auto-increment. The actual paths/params/schemas for these were
+      NOT retrievable via web search/fetch (likely JS-rendered doc pages) and are
+      NOT filled in here. Do not assume the placeholder paths below are real.
+    - Fill in placeholders by:
+        1. Opening Network tab in your browser while using Vince Platform, or
+        2. Testing endpoints directly against your tenant with Postman/curl, or
+        3. Asking Vince support/your account contact for a Postman collection.
+      Update the paths, parameters, and response schemas as you confirm them.
+
+servers:
+  - url: https://api.vincelive.dev
+    description: Vince Platform API base (confirmed from Access Management docs)
+
+security:
+  - oauth2ClientCredentials: []
+
+components:
+  securitySchemes:
+    oauth2ClientCredentials:
+      type: oauth2
+      description: >
+        CONFIRMED. Vince Platform API Clients authenticate via OAuth 2.0
+        client_credentials grant. Create an API Client under
+        Administration > Access Management > API Clients to get a Client ID
+        and Secret, then create a Connection using Auth Type: OAuth,
+        Grant Type: client_credentials, Token URI below.
+      flows:
+        clientCredentials:
+          tokenUrl: https://api.vincelive.dev/oauth/token
+          scopes: {}
+
+  schemas:
+    Role:
+      type: object
+      description: CONFIRMED shape, based on Access Management docs (Roles tab).
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        app:
+          type: string
+          description: e.g. "Foundation"
+        resourceType:
+          type: string
+          description: e.g. "Workflow", "User", "Table"
+        resourceName:
+          type: string
+          description: e.g. specific workflow or user name the role scopes to
+        permission:
+          type: string
+          enum: [Read, Write, All]
+        active:
+          type: boolean
+
+    User:
+      type: object
+      description: CONFIRMED shape, based on Access Management docs (Users tab).
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        m3UserId:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        permissions:
+          type: string
+          enum: [Admin, User]
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+        tags:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              value:
+                type: string
+        active:
+          type: boolean
+        lastActive:
+          type: string
+          format: date-time
+
+    ApiClient:
+      type: object
+      description: CONFIRMED shape, based on Access Management docs (API Clients tab).
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        label:
+          type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
+        active:
+          type: boolean
+        clientId:
+          type: string
+        clientSecret:
+          type: string
+          description: Only shown/copyable after creation. Treat like a password.
+
+    # --- PLACEHOLDER SCHEMAS BELOW: shape not confirmed, fill in once verified ---
+    Workflow:
+      type: object
+      description: PLACEHOLDER — confirm actual fields against your tenant.
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        status:
+          type: string
+        trigger:
+          type: string
+          description: e.g. Manual, Scheduled, Event/Webhook
+
+    CustomTable:
+      type: object
+      description: PLACEHOLDER — confirm actual fields against your tenant.
+      properties:
+        name:
+          type: string
+        fields:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              dataType:
+                type: string
+              isPrimaryKey:
+                type: boolean
+
+    Schedule:
+      type: object
+      description: PLACEHOLDER — confirm actual fields against your tenant.
+      properties:
+        id:
+          type: string
+        workflowId:
+          type: string
+        cronExpression:
+          type: string
+
+    Variable:
+      type: object
+      description: PLACEHOLDER — confirm actual fields against your tenant.
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+
+    Tag:
+      type: object
+      description: >
+        CONFIRMED to exist (used for dynamic/personalized workflow inputs),
+        but exact API schema (vs UI-only) is a PLACEHOLDER.
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+
+paths:
+  # ============================================================
+  # CONFIRMED — from Access Management documentation
+  # ============================================================
+  /users:
+    get:
+      summary: List/export users
+      description: >
+        CONFIRMED to exist — referenced directly in Access Management docs
+        as the endpoint used in the "export users" example workflow
+        (REST API step calling /users using an OAuth connection).
+      tags: [Users]
+      responses:
+        "200":
+          description: List of users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+
+  /admin/resources/roles:
+    get:
+      summary: List roles
+      description: PLACEHOLDER path (pattern typical of this platform family — NOT confirmed for Vince specifically). Verify against your tenant.
+      tags: [Roles]
+      responses:
+        "200":
+          description: List of roles
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Role"
+
+  # ============================================================
+  # PLACEHOLDER — paths are guesses based on object name only.
+  # Vince's doc site confirms these OBJECT TYPES exist as part of
+  # the "Vince Platform API's" reference, but not their exact routes.
+  # Replace with real paths once confirmed.
+  # ============================================================
+  /workflows:
+    get:
+      summary: List workflows
+      description: PLACEHOLDER — object type confirmed to exist; path not confirmed.
+      tags: [Workflows]
+      responses:
+        "200":
+          description: List of workflows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Workflow"
+    post:
+      summary: Trigger a workflow execution
+      description: PLACEHOLDER — confirm request body and response shape.
+      tags: [Workflows]
+      responses:
+        "200":
+          description: Execution result
+
+  /tables:
+    get:
+      summary: List custom tables
+      description: PLACEHOLDER — object type (Custom Tables) confirmed to exist; path not confirmed.
+      tags: [Custom Tables]
+      responses:
+        "200":
+          description: List of custom tables
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CustomTable"
+
+  /schedules:
+    get:
+      summary: List schedules
+      description: PLACEHOLDER — object type confirmed to exist; path not confirmed.
+      tags: [Schedules]
+      responses:
+        "200":
+          description: List of schedules
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Schedule"
+
+  /variables:
+    get:
+      summary: List tenant variables
+      description: PLACEHOLDER — object type confirmed to exist; path not confirmed.
+      tags: [Variables]
+      responses:
+        "200":
+          description: List of variables
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Variable"
+
+  /tags:
+    get:
+      summary: List tags
+      description: PLACEHOLDER — object type confirmed to exist (used for dynamic workflow inputs); path not confirmed.
+      tags: [Tags]
+      responses:
+        "200":
+          description: List of tags
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+
+  # Tenant, Utils, Auto-increment, Common features: no schema drafted yet —
+  # these categories exist per the docs nav but nothing about their shape
+  # was retrievable. Add paths/schemas here once confirmed.

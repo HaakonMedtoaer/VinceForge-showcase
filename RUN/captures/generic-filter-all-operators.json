@@ -1,0 +1,163 @@
+{
+  "_provenance": "Real GET of a workflow hand-built in Live's UI by Haakon on 2026-09-28 (workflowName 'ghfc', hasError false, workflowType EXPRESS, never run - numRuns 0). One Generic Filter condition per operator the UI offers, on columns A..J. Trimmed to the Generic Filter step and trigger shape; tenant/user ids, workflowId and definitionAsl removed. This confirms SAVED shape, not runtime behaviour.",
+  "operator_by_column": {
+    "A": "equal",
+    "B": "notEqual",
+    "C": "lessThan",
+    "D": "lessThanInclusive",
+    "E": "greaterThan",
+    "F": "greaterThanInclusive",
+    "G": "isBlank",
+    "H": "isNotBlank",
+    "I": "stringContains",
+    "J": "stringNotContains"
+  },
+  "generic_filter_1": {
+    "all": [
+      {
+        "all": [
+          {
+            "all": [
+              {
+                "all": [
+                  {
+                    "all": [
+                      {
+                        "all": [
+                          {
+                            "all": [
+                              {
+                                "all": [
+                                  {
+                                    "all": [
+                                      {
+                                        "clientKey": "Filter_A",
+                                        "source": "CLIENT",
+                                        "dataType": "STRING",
+                                        "from": "Row",
+                                        "logicalType": "AND",
+                                        "operator": "equal",
+                                        "value": "{{ header.Filter_A }}",
+                                        "fact": "A",
+                                        "defaultValue": "1"
+                                      },
+                                      {
+                                        "from": "Row",
+                                        "logicalType": "AND",
+                                        "clientKey": "Filter_B",
+                                        "source": "CLIENT",
+                                        "value": "{{ header.Filter_B }}",
+                                        "fact": "B",
+                                        "dataType": "STRING",
+                                        "defaultValue": "1",
+                                        "operator": "notEqual"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "operator": "lessThan",
+                                    "value": "{{ header.Filter_C }}",
+                                    "defaultValue": "1",
+                                    "dataType": "STRING",
+                                    "logicalType": "AND",
+                                    "clientKey": "Filter_C",
+                                    "fact": "C",
+                                    "from": "Row",
+                                    "source": "CLIENT"
+                                  }
+                                ]
+                              },
+                              {
+                                "source": "CLIENT",
+                                "logicalType": "AND",
+                                "value": "{{ header.Filter_D }}",
+                                "operator": "lessThanInclusive",
+                                "clientKey": "Filter_D",
+                                "from": "Row",
+                                "fact": "D",
+                                "dataType": "STRING",
+                                "defaultValue": "1"
+                              }
+                            ]
+                          },
+                          {
+                            "operator": "greaterThan",
+                            "from": "Row",
+                            "fact": "E",
+                            "source": "CLIENT",
+                            "clientKey": "Filter_E",
+                            "dataType": "STRING",
+                            "defaultValue": "1",
+                            "value": "{{ header.Filter_E }}",
+                            "logicalType": "AND"
+                          }
+                        ]
+                      },
+                      {
+                        "logicalType": "AND",
+                        "value": "{{ header.Filter_F }}",
+                        "defaultValue": "1",
+                        "source": "CLIENT",
+                        "clientKey": "Filter_F",
+                        "from": "Row",
+                        "fact": "F",
+                        "operator": "greaterThanInclusive",
+                        "dataType": "STRING"
+                      }
+                    ]
+                  },
+                  {
+                    "defaultValue": "''",
+                    "fact": "G",
+                    "source": "CONSTANT",
+                    "dataType": "STRING",
+                    "logicalType": "AND",
+                    "clientKey": "Filter_G",
+                    "from": "Row",
+                    "operator": "isBlank",
+                    "value": "''"
+                  }
+                ]
+              },
+              {
+                "operator": "isNotBlank",
+                "value": "''",
+                "clientKey": "Filter_H",
+                "logicalType": "AND",
+                "source": "CONSTANT",
+                "fact": "H",
+                "from": "Row",
+                "defaultValue": "''",
+                "dataType": "STRING"
+              }
+            ]
+          },
+          {
+            "defaultValue": "1",
+            "source": "CLIENT",
+            "value": "{{ header.Filter_I }}",
+            "logicalType": "AND",
+            "dataType": "STRING",
+            "fact": "I",
+            "from": "Row",
+            "clientKey": "Filter_I",
+            "operator": "stringContains"
+          }
+        ]
+      },
+      {
+        "defaultValue": "1",
+        "operator": "stringNotContains",
+        "from": "Row",
+        "logicalType": "AND",
+        "value": "{{ header.Filter_J }}",
+        "source": "CLIENT",
+        "fact": "J",
+        "dataType": "STRING",
+        "clientKey": "Filter_J"
+      }
+    ]
+  },
+  "_trigger_note": "trigger_1.fields and workflowConfig.inputs carry Filter_A..F and Filter_I..J only (type text, dataType STRING, length 15, mandatory true, value '1', formGroupId 2 'filters'). The isBlank/isNotBlank conditions (G, H) are source CONSTANT with value \"''\" and get NO trigger field and NO input.",
+  "_ui_options_not_yet_captured": "Per the UI (Haakon, 2026-09-28) each condition can also choose source Client/Constant, data type number/string/boolean, and logic operator AND/OR. This capture only shows STRING, CLIENT, CONSTANT (blank operators only) and AND - the JSON for number, boolean, OR and a Constant with a real value is unknown."
+}

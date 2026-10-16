@@ -1,0 +1,54 @@
+{
+  "vinceforge": "pipeline/1",
+  "name": "Read an order back from M3 (no M3 API step)",
+  "description": "Rebuild of a real production workflow (INT - CSD - Display customer order lines): three bulk reads against OIS100MI, then one Transform that maps the results into flat rows. Kept as a known-good reference shape for the generic path - if a generated workflow ever renders or executes oddly, diff against this.",
+  "baseUrl": "https://mingle-ionapi.eu1.inforcloudsuite.com/DEMO_TENANT",
+  "vxl": true,
+  "trigger": {
+    "description": "One order number",
+    "buttonText": "Fetch",
+    "hasSpreadSheetInput": true,
+    "fields": [{"name": "OrderNumber", "label": "Order number", "length": "10"}]
+  },
+  "steps": [
+    {
+      "kind": "m3Bulk",
+      "ref": "head",
+      "name": "OIS100MI - GetOrderHead",
+      "program": "OIS100MI",
+      "rows": "$context.data.trigger.body",
+      "calls": [
+        {
+          "transaction": "GetOrderHead",
+          "record": {"ORNO": {"row": "OrderNumber"}},
+          "selectedColumns": ["ORNO", "CUNO", "CUOR", "ORTP", "ORSL", "TEPY", "MODL", "ORDT"]
+        }
+      ]
+    },
+    {
+      "kind": "m3Bulk",
+      "ref": "charges",
+      "name": "OIS100MI - LstConnCOCharge",
+      "program": "OIS100MI",
+      "rows": "$context.data.trigger.body",
+      "calls": [
+        {"transaction": "LstConnCOCharge", "record": {"ORNO": {"row": "OrderNumber"}}}
+      ]
+    },
+    {
+      "kind": "m3Bulk",
+      "ref": "lines",
+      "name": "OIS100MI - LstLine",
+      "program": "OIS100MI",
+      "rows": "$context.data.trigger.body",
+      "calls": [
+        {"transaction": "LstLine", "record": {"ORNO": {"row": "OrderNumber"}}}
+      ]
+    },
+    {
+      "kind": "transform",
+      "name": "Flatten to sheet rows",
+      "template": "$context.data.all.rest_api_3.body.results.records.{\n  \"OrderNumber\": $context.data.all.rest_api_1.body.results.records.ORNO,\n  \"CustomerNumber\": $context.data.all.rest_api_1.body.results.records.CUNO,\n  \"CustomerOrder\": $context.data.all.rest_api_1.body.results.records.CUOR,\n  \"ChargeAmount\": $context.data.all.rest_api_2.body.results.records[0].CRAM,\n  \"LineNumber\": PONR,\n  \"ItemNumber\": ITNO,\n  \"ItemDescription\": ITDS,\n  \"OrderedQuantity\": ORQT,\n  \"SalesPrice\": SAPR\n}[]"
+    }
+  ]
+}

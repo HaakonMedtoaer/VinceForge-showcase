@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+CLAUDE_BIN="$(command -v claude 2>/dev/null || true)"
+if [ -z "$CLAUDE_BIN" ]; then
+  # PATH lookup can miss it in a non-interactive git-hook shell even when
+  # it works fine in a terminal. Fall back to common global npm locations
+  # before giving up, rather than hardcoding one user's home directory.
+  for candidate in \
+    "$APPDATA/npm/claude" \
+    "$HOME/AppData/Roaming/npm/claude" \
+    "$HOME/.npm-global/bin/claude" \
+    "/usr/local/bin/claude"
+  do
+    if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+      CLAUDE_BIN="$candidate"
+      break
+    fi
+  done
+fi
+
+if [ -z "$CLAUDE_BIN" ]; then
+  echo "⚠️  Could not find the 'claude' CLI on PATH or in common install locations — skipping audit."
+  exit 0
+fi
+
+# --- Capability matrix freshness (warn only, never blocks) -----------------
+# The matrix restates what the converter enforces, so editing converter/*.py
+# can silently invalidate it. This is a WARNING and not a gate on purpose: a
+# stale doc is worth knowing about, but it is not a reason to stop a push the
+# way a leaked credential is. No LLM and no network - render_matrix.py --check
+# just re-renders from the data and compares.
+if command -v python >/dev/null 2>&1; then
+  if ! python converter/render_matrix.py --check >/dev/null 2>&1; then
+    echo ""
+    echo "⚠️  docs/vinceforge-capability-matrix.md is STALE."
+    echo "   Run: python converter/render_matrix.py"
+    echo "   Not blocking the push."
+  fi
+  if ! python converter/selftest_matrix.py >/dev/null 2>&1; then
+    echo ""
+    echo "⚠️  Capability-matrix self-tests FAIL - the matrix has drifted from the code."
+    echo "   Run: python converter/selftest_matrix.py"
+    echo "   Not blocking the push."
+  fi
+fi
+
+echo "Running Claude Code audit before push..."
+
+if ! git rev-parse --verify origin/main >/dev/null 2>&1; then
+  echo "Warning: origin/main not found locally — skipping audit (nothing to diff against)."
+  exit 0
+fi
+
+DIFF=$(git diff origin/main...HEAD)
+
+if [ -z "$DIFF" ]; then
+  echo "No changes to audit."
+  exit 0
+fi
+
+AUDIT_OUTPUT=$(echo "$DIFF" | "$CLAUDE_BIN" -p "Audit the diff provided via stdin for: hardcoded secrets/credentials, obvious security issues, and clear bugs. Be terse — only flag real problems, skip style nits. Your response's FINAL line must be exactly one of: 'VERDICT: OK' or 'VERDICT: BLOCK' — nothing after it, and do not use either phrase anywhere else in your response." --allowedTools "Read,Grep,Glob" 2>&1)
+
+echo "$AUDIT_OUTPUT"
+
+LAST_LINE=$(echo "$AUDIT_OUTPUT" | tail -n 1 | tr -d '\r')
+
+if [ "$LAST_LINE" = "VERDICT: BLOCK" ]; then
+  echo ""
+  echo "❌ Audit flagged a blocking issue. Push aborted. Fix and try again, or use --no-verify to skip."
+  exit 1
+elif [ "$LAST_LINE" != "VERDICT: OK" ]; then
+  echo ""
+  echo "⚠️  Audit gave no clear verdict — treating as failure to be safe."
+  exit 1
+fi
+
+echo "✅ Audit passed."
+exit 0

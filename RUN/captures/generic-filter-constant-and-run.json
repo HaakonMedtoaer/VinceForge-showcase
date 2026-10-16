@@ -1,0 +1,64 @@
+{
+  "_provenance": "Real GET of the same UI-built test workflow ('ghfc'), 2026-09-28T08:04Z, now with an M3 API step (CRS610MI/Add) and Excel step, and one CONSTANT condition with a real value. Trimmed; ids and definitionAsl removed. Its runs are in RUN/filter-debug/.",
+  "findings": {
+    "constant_with_value": "source CONSTANT stores the literal in value AND defaultValue; no trigger field, no workflowConfig.inputs entry (only Filter_A..C exist)",
+    "dangling_or": "D is the LAST condition and has logicalType OR, yet the level holding it is 'all' - C (before it) is AND. Confirms logicalType is the connector to the NEXT condition.",
+    "runtime": "run WFEXEC-16078e16...: rows {A:9,B:11,C:50,D:5000} all passed (17/17) - C=50 lessThan '100' with dataType NUMBER passed, so numeric, not lexical. run WFEXEC-ea81e705...: B=10 greaterThan '10' -> 0/17 passed, correct."
+  },
+  "generic_filter_1": {
+    "all": [
+      {
+        "all": [
+          {
+            "all": [
+              {
+                "source": "CLIENT",
+                "clientKey": "Filter_A",
+                "value": "{{ header.Filter_A }}",
+                "operator": "equal",
+                "dataType": "NUMBER",
+                "fact": "A",
+                "from": "Row",
+                "defaultValue": "9",
+                "logicalType": "AND"
+              },
+              {
+                "from": "Row",
+                "defaultValue": "10",
+                "logicalType": "AND",
+                "clientKey": "Filter_B",
+                "value": "{{ header.Filter_B }}",
+                "fact": "B",
+                "source": "CLIENT",
+                "dataType": "NUMBER",
+                "operator": "greaterThan"
+              }
+            ]
+          },
+          {
+            "defaultValue": "100",
+            "operator": "lessThan",
+            "logicalType": "AND",
+            "dataType": "NUMBER",
+            "value": "{{ header.Filter_C }}",
+            "from": "Row",
+            "fact": "C",
+            "clientKey": "Filter_C",
+            "source": "CLIENT"
+          }
+        ]
+      },
+      {
+        "dataType": "STRING",
+        "from": "Row",
+        "clientKey": "Filter_D",
+        "operator": "lessThanInclusive",
+        "logicalType": "OR",
+        "defaultValue": "5000",
+        "source": "CONSTANT",
+        "fact": "D",
+        "value": "5000"
+      }
+    ]
+  }
+}

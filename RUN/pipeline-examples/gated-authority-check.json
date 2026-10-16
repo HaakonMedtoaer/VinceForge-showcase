@@ -1,0 +1,60 @@
+{
+  "vinceforge": "pipeline/1",
+  "name": "Mass allocation with authority gate",
+  "description": "The Classic shape Live's native Generic Filter cannot express: an authority check that runs for EVERY row, whose own output then decides whether the allocation call runs for that row. Native filtering runs once before the whole M3 API step, so it would skip the authority check too. Here each M3 call carries its own JSONata filter. Field names are placeholders until real example data lands - the structure is the point.",
+  "baseUrl": "https://mingle-ionapi.eu1.inforcloudsuite.com/DEMO_TENANT",
+  "vxl": true,
+  "trigger": {
+    "description": "Paste rows, pick the warehouse, run",
+    "buttonText": "Allocate",
+    "hasSpreadSheetInput": true,
+    "fields": [
+      {"name": "CONO", "label": "Company", "length": "3", "defaultValue": "100"},
+      {"name": "WHLO", "label": "Warehouse", "length": "3"}
+    ]
+  },
+  "steps": [
+    {
+      "kind": "m3Bulk",
+      "ref": "authority",
+      "name": "AUTCHKMI - authority check (every row)",
+      "program": "AUTCHKMI",
+      "rows": "$context.data.trigger.body",
+      "calls": [
+        {
+          "transaction": "ChkAuthority",
+          "record": {
+            "PGNM": {"const": "MMS100"},
+            "ITNO": {"row": "ItemNumber"}
+          }
+        }
+      ]
+    },
+    {
+      "kind": "m3Bulk",
+      "ref": "allocate",
+      "name": "MMS120MI - allocate (only rows that passed)",
+      "program": "MMS120MI",
+      "rows": "$context.data.trigger.body",
+      "gates": [
+        {"left": {"step": "authority.ALPG"}, "op": "eq", "right": {"const": "1"}},
+        {"left": {"row": "Approved"}, "op": "eq", "right": {"const": "OK"}, "caseInsensitive": true}
+      ],
+      "calls": [
+        {
+          "transaction": "AllocateOrdLine",
+          "record": {
+            "WHLO": {"trigger": "WHLO"},
+            "ITNO": {"row": "ItemNumber"},
+            "ALQT": {"row": "Quantity"}
+          }
+        }
+      ]
+    },
+    {
+      "kind": "transform",
+      "name": "Shape for the sheet",
+      "template": "$context.data.all.rest_api_2.body.results.records.{ \"Item\": ITNO, \"Allocated\": ALQT = null ? \"\" : ALQT, \"Message\": $string(ALQT) = \"\" ? \"not allocated\" : \"ok\" }[]"
+    }
+  ]
+}

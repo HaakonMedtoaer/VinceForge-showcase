@@ -1,0 +1,160 @@
+{
+  "_provenance": "Real GET of the same UI-built workflow as generic-filter-all-operators.json ('ghfc'), re-saved by Haakon 2026-09-28T07:45Z with data types and one OR varied (hasError false, workflowType EXPRESS, never run - numRuns 0). Trimmed to the Generic Filter step; ids and definitionAsl removed. SAVED shape only, not runtime behaviour.",
+  "findings": {
+    "dataType_values": [
+      "NUMBER",
+      "STRING",
+      "BOOLEAN"
+    ],
+    "dataType_is_repeated_on": "the condition, the trigger field (trigger_1.fields / clientConfig.fields) and workflowConfig.inputs.<clientKey>.dataType",
+    "or": "condition E has logicalType 'OR', and the nesting level that joins the group ending in E to the NEXT condition (F) is 'any' instead of 'all' - a condition's logicalType is the connector to the condition AFTER it (E itself sits in an ordinary 'all' with A..D). The last condition's logicalType has nothing to join.",
+    "reads_as": "((((((((A and B) and C) and D) and E) or F) and G) and H) and I) and J",
+    "not_captured": "a CONSTANT source with a real value (only the blank operators use CONSTANT here)"
+  },
+  "generic_filter_1": {
+    "all": [
+      {
+        "all": [
+          {
+            "all": [
+              {
+                "all": [
+                  {
+                    "any": [
+                      {
+                        "all": [
+                          {
+                            "all": [
+                              {
+                                "all": [
+                                  {
+                                    "all": [
+                                      {
+                                        "operator": "equal",
+                                        "from": "Row",
+                                        "defaultValue": "9",
+                                        "logicalType": "AND",
+                                        "fact": "A",
+                                        "source": "CLIENT",
+                                        "dataType": "NUMBER",
+                                        "clientKey": "Filter_A",
+                                        "value": "{{ header.Filter_A }}"
+                                      },
+                                      {
+                                        "logicalType": "AND",
+                                        "defaultValue": "10",
+                                        "operator": "greaterThan",
+                                        "value": "{{ header.Filter_B }}",
+                                        "source": "CLIENT",
+                                        "clientKey": "Filter_B",
+                                        "from": "Row",
+                                        "fact": "B",
+                                        "dataType": "NUMBER"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "logicalType": "AND",
+                                    "operator": "lessThan",
+                                    "from": "Row",
+                                    "fact": "C",
+                                    "defaultValue": "100",
+                                    "source": "CLIENT",
+                                    "clientKey": "Filter_C",
+                                    "value": "{{ header.Filter_C }}",
+                                    "dataType": "NUMBER"
+                                  }
+                                ]
+                              },
+                              {
+                                "source": "CLIENT",
+                                "operator": "lessThanInclusive",
+                                "clientKey": "Filter_D",
+                                "dataType": "STRING",
+                                "logicalType": "AND",
+                                "defaultValue": "1",
+                                "value": "{{ header.Filter_D }}",
+                                "from": "Row",
+                                "fact": "D"
+                              }
+                            ]
+                          },
+                          {
+                            "dataType": "BOOLEAN",
+                            "source": "CLIENT",
+                            "value": "{{ header.Filter_E }}",
+                            "operator": "greaterThan",
+                            "fact": "E",
+                            "from": "Row",
+                            "defaultValue": "1",
+                            "logicalType": "OR",
+                            "clientKey": "Filter_E"
+                          }
+                        ]
+                      },
+                      {
+                        "source": "CLIENT",
+                        "value": "{{ header.Filter_F }}",
+                        "fact": "F",
+                        "from": "Row",
+                        "clientKey": "Filter_F",
+                        "defaultValue": "1",
+                        "logicalType": "AND",
+                        "operator": "greaterThanInclusive",
+                        "dataType": "STRING"
+                      }
+                    ]
+                  },
+                  {
+                    "source": "CONSTANT",
+                    "defaultValue": "''",
+                    "dataType": "STRING",
+                    "from": "Row",
+                    "logicalType": "AND",
+                    "fact": "G",
+                    "clientKey": "Filter_G",
+                    "operator": "isBlank",
+                    "value": "''"
+                  }
+                ]
+              },
+              {
+                "value": "''",
+                "defaultValue": "''",
+                "from": "Row",
+                "dataType": "STRING",
+                "fact": "H",
+                "operator": "isNotBlank",
+                "logicalType": "AND",
+                "clientKey": "Filter_H",
+                "source": "CONSTANT"
+              }
+            ]
+          },
+          {
+            "dataType": "STRING",
+            "clientKey": "Filter_I",
+            "fact": "I",
+            "operator": "stringContains",
+            "defaultValue": "1",
+            "logicalType": "AND",
+            "from": "Row",
+            "source": "CLIENT",
+            "value": "{{ header.Filter_I }}"
+          }
+        ]
+      },
+      {
+        "value": "{{ header.Filter_J }}",
+        "from": "Row",
+        "fact": "J",
+        "dataType": "STRING",
+        "defaultValue": "1",
+        "logicalType": "AND",
+        "operator": "stringNotContains",
+        "clientKey": "Filter_J",
+        "source": "CLIENT"
+      }
+    ]
+  }
+}

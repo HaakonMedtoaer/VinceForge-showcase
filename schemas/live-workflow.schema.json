@@ -1,0 +1,383 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vince.internal/schemas/live-workflow.schema.json",
+  "title": "Vince Live Workflow (POST /workflows body)",
+  "$comment": "Every field/value in this schema was confirmed by building a real example in Vince Live's own UI or API and capturing the resulting JSON - NOT inferred from documentation or guessed. Where something is still unconfirmed, it's marked explicitly as such rather than silently presented as fact. If you (an LLM without access to Live) are drafting a workflow JSON from this schema, treat anything not covered here as unknown - do not invent new step types, field names, or enum values by analogy; ask for a real captured example instead.",
+  "type": "object",
+  "required": ["entity", "description", "hasError", "tenantId", "workflowId", "workflowName", "workflowAlias", "active", "workflowType", "labels", "tags", "definition"],
+  "properties": {
+    "entity": { "const": "Workflow" },
+    "description": { "type": "string", "description": "Can be empty string. Confirmed required at creation even though GET responses sometimes omit it entirely." },
+    "hasError": {
+      "type": "boolean",
+      "description": "CLIENT-COMPUTED, not server-validated. Live's own UI sends true at creation (a blank workflow is genuinely incomplete) and false once its own validation decides the workflow looks complete. Since you're bypassing that UI validation, set this to false yourself when creating a workflow you believe is complete."
+    },
+    "tenantId": { "type": "string", "pattern": "^TENANT-[0-9a-f]{32}$" },
+    "workflowId": {
+      "type": "string",
+      "pattern": "^WORKFLOW-[0-9a-f]{32}$",
+      "description": "You must send a syntactically valid one to pass validation, but Live assigns its OWN id regardless of what you send - always read the real id back from the API response, never assume it matches what you generated."
+    },
+    "workflowName": { "type": "string" },
+    "workflowAlias": { "type": "string", "description": "Same value as workflowName in every confirmed example." },
+    "active": { "type": "boolean", "default": true },
+    "workflowType": {
+      "const": "STANDARD",
+      "description": "CRITICAL: sending \"EXPRESS\" at creation produces a broken, half-provisioned workflow (exists enough to block re-creating the same id, but unreachable via GET and invisible in the workflow list). EXPRESS has been observed elsewhere (manually-built test workflows saved via a different UI wizard path) but STANDARD is the only confirmed-correct value for creation via the API directly."
+    },
+    "labels": { "type": "array", "items": { "type": "string" }, "description": "Empty array at creation in every confirmed example." },
+    "tags": {
+      "type": "object",
+      "required": ["connectionId", "apiEnvironment", "environments", "primaryEnvironment"],
+      "description": "CRITICAL: apiEnvironment/environments/primaryEnvironment must be a real, correctly-formatted ENVIRONMENT-<32 hex> id, and connectionId entries must be real CONNECTION-<32 hex> ids. A malformed id here does NOT fail validation at creation time, but silently breaks the M3 API step's per-transaction field rendering in the builder UI (surfaces as a JS TypeError in the frontend, not a clear server error). Always sanity-check these three id formats first if a workflow renders broken.",
+      "properties": {
+        "connectionId": { "type": "array", "items": { "type": "string", "pattern": "^CONNECTION-[0-9a-f]{32}$" } },
+        "apiEnvironment": { "type": "string", "pattern": "^ENVIRONMENT-[0-9a-f]{32}$" },
+        "environments": { "type": "array", "items": { "type": "string", "pattern": "^ENVIRONMENT-[0-9a-f]{32}$" } },
+        "primaryEnvironment": { "type": "string", "pattern": "^ENVIRONMENT-[0-9a-f]{32}$" }
+      }
+    },
+    "definition": {
+      "type": "object",
+      "required": ["workflowConfig", "stepConfig"],
+      "properties": {
+        "workflowConfig": { "$ref": "#/$defs/workflowConfig" },
+        "stepConfig": { "$ref": "#/$defs/stepConfig" }
+      }
+    }
+  },
+
+  "$defs": {
+
+    "workflowConfig": {
+      "type": "object",
+      "required": ["name", "constants", "inputs", "connectionContext", "hasSpreadSheetInput", "hasExcelDesignFile", "hasTemplateFile", "workflowTags", "apiFieldReferences", "contexts", "clientConfig", "steps"],
+      "properties": {
+        "name": { "type": "string", "description": "Same value as top-level workflowName." },
+        "constants": {
+          "type": "object",
+          "description": "Keyed \"CONSTANT_<fieldName>\" -> literal value. Populated for every M3 API input field with source=CONSTANT; the input field itself then stores \"value\": \"CONSTANT_<fieldName>\" (the key, not the literal) - see InputField.",
+          "additionalProperties": { "type": "string" }
+        },
+        "inputs": {
+          "type": "object",
+          "description": "One entry per CLIENT-sourced trigger field (by field name) and per Generic Filter field (\"Filter_<Column>\"). Each value is {\"dataType\":\"STRING\",\"validation\":{\"required\":true}} in every confirmed example.",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "dataType": { "type": "string" },
+              "validation": { "type": "object", "properties": { "required": { "const": true } } }
+            }
+          }
+        },
+        "connectionContext": {
+          "type": "object",
+          "description": "Confirmed key \"M3\" -> connectionId, used by M3 API steps. Unconfirmed whether other step types (REST API, Code) need their own connectionContext entry - REST API and Code steps observed so far reference connections directly in their own stepConfig instead.",
+          "properties": { "M3": { "type": "string", "pattern": "^CONNECTION-[0-9a-f]{32}$" } }
+        },
+        "hasSpreadSheetInput": {
+          "type": "boolean",
+          "description": "true if ANY M3 API transaction has an EXCEL/COLUMN-sourced input field, OR any transaction has output cells mapped to Excel columns. Compute as (any transaction has non-empty output) OR (any input field has source=EXCEL)."
+        },
+        "hasExcelDesignFile": { "const": false },
+        "hasTemplateFile": { "const": false },
+        "workflowTags": { "type": "object", "description": "Empty object in every confirmed example." },
+        "apiFieldReferences": { "type": "object", "description": "Empty object in every confirmed example - confirmed fine even when API-chained input references exist elsewhere." },
+        "contexts": { "type": "object", "description": "Empty object in every confirmed example." },
+        "clientConfig": {
+          "type": "object",
+          "description": "Mirrors trigger_1's own stepConfig entry (title/description/buttonText/formGroups/fields all duplicated between the two locations in every confirmed example).",
+          "required": ["title", "description", "buttonText", "formGroups", "fields"],
+          "properties": {
+            "title": { "type": "string" },
+            "description": { "type": "string" },
+            "buttonText": { "type": "string" },
+            "formGroups": { "type": "array", "items": { "$ref": "#/$defs/formGroup" } },
+            "fields": { "type": "array", "items": { "$ref": "#/$defs/triggerField" } }
+          }
+        },
+        "steps": {
+          "type": "array",
+          "description": "Always a single-element array: one root TRIGGER step, whose childSteps nest the rest of the chain (linear, one child at a time - no branching seen in any confirmed example).",
+          "items": { "$ref": "#/$defs/stepNode" },
+          "minItems": 1,
+          "maxItems": 1
+        }
+      }
+    },
+
+    "formGroup": {
+      "type": "object",
+      "properties": { "groupId": { "type": "integer" }, "groupName": { "type": "string" } },
+      "description": "groupId 1 = \"fields\" (regular CLIENT trigger fields), groupId 2 = \"filters\" (Generic Filter fields) - only present when a Generic Filter step exists."
+    },
+
+    "triggerField": {
+      "type": "object",
+      "description": "formGroupId and elementPosition are NOT cosmetic - a field missing formGroupId renders in NO group and is invisible in the Trigger tab. A workflow with zero trigger fields anywhere renders an empty Trigger tab; confirmed as correct/expected, not a bug.",
+      "required": ["fieldId", "fieldName", "label", "placeHolder", "dataType", "length", "mandatory", "type", "formGroupId", "elementPosition"],
+      "properties": {
+        "fieldId": { "type": "string" },
+        "fieldName": { "type": "string" },
+        "label": { "type": "string" },
+        "placeHolder": { "type": "string" },
+        "dataType": { "type": "string", "description": "\"STRING\" in every confirmed example; use STRING if the underlying M3 field type is UNKNOWN rather than passing UNKNOWN through." },
+        "length": { "type": "string", "description": "String, not number, e.g. \"15\"." },
+        "mandatory": { "const": true },
+        "type": { "const": "text" },
+        "formGroupId": { "type": "integer" },
+        "elementPosition": { "type": "integer", "description": "1-based, resets to 1 within each form group." },
+        "apiId": { "type": "string", "description": "Only present on CLIENT-sourced M3 API fields (not Generic Filter fields). Points at the LAST M3 API transaction instance that declared this field name as CLIENT - overwritten on each repeated occurrence, not the first." },
+        "value": { "type": "string", "description": "Generic Filter fields only - the default filter value." }
+      }
+    },
+
+    "stepNode": {
+      "type": "object",
+      "description": "One node in the linear step chain. type/target/name combinations confirmed so far - do not invent others by analogy, a wrong type value produces a real 400 (\"WorkflowDefinition is invalid! ... has invalid type: X\") but does not reveal the correct one.",
+      "required": ["stepId", "type", "name", "target", "childSteps"],
+      "properties": {
+        "stepId": { "type": "string", "description": "Conventionally \"<kind>_<n>\", e.g. m3_api_1, excel_1, generic_filter_1, transform_1, rest_api_1, code_1. Confirmed directly: JSONata expressions in Transform steps reference sibling steps by this exact id, e.g. $context.data.all.rest_api_1." },
+        "type": {
+          "enum": ["TRIGGER", "API", "EXCEL", "GENERIC_FILTER", "TRANSFORMER_MORPH", "GENERIC_API", "GENERIC_CODE"],
+          "description": "TRIGGER=trigger_1 (root, always present). API=an M3 API step (e.g. m3_api_1). EXCEL=excel_1, an M3-API-specific output step - see the top-level $comment on stepConfig.excel_1 for why it cannot follow non-M3 steps. GENERIC_FILTER=generic_filter_1, filters raw Excel row data before the M3 API step runs. TRANSFORMER_MORPH=a Transform step (JSONata). GENERIC_API=a REST API step. GENERIC_CODE=a Code (Node.js) step."
+        },
+        "name": { "type": "string", "enum": ["Trigger", "M3 API", "Excel", "Generic Filter", "Transform", "Rest API", "Code"], "description": "Human label shown in the builder UI - exact casing confirmed, e.g. \"Rest API\" not \"REST API\"." },
+        "target": {
+          "type": "string",
+          "enum": ["workflow-trigger", "workflow-api", "workflow-excel", "workflow-generic-filter", "workflow-transform", "workflow-rest-api", "workflow-code"],
+          "description": "Follows a workflow-<kebab-type> pattern in every confirmed example."
+        },
+        "retryAttempts": { "type": "integer", "const": 0, "description": "Present (always 0) on every step EXCEPT trigger_1, which omits this field entirely." },
+        "childSteps": {
+          "type": "array",
+          "description": "Empty array is a valid, saveable terminal state for ANY step type (confirmed: a real workflow ending at a Code step with childSteps:[] saved fine). Do not assume a workflow must end in excel_1.",
+          "items": { "$ref": "#/$defs/stepNode" }
+        }
+      }
+    },
+
+    "stepConfig": {
+      "type": "object",
+      "description": "Keyed by stepId. Shape of each value depends on that step's type - see the per-type $defs below. trigger_1 is always present; the rest depend on which steps exist in workflowConfig.steps.",
+      "properties": {
+        "trigger_1": { "$ref": "#/$defs/triggerStepConfig" },
+        "excel_1": { "$ref": "#/$defs/excelStepConfig" },
+        "generic_filter_1": { "$ref": "#/$defs/genericFilterStepConfig" }
+      },
+      "additionalProperties": {
+        "description": "For any other stepId: an m3_api_N-style key holds a map of transactionInstanceId -> Transaction (see $defs/transaction); a transform_N-style key holds $defs/transformStepConfig; a rest_api_N-style key holds $defs/restApiStepConfig; a code_N-style key holds $defs/codeStepConfig. Which shape applies is determined by that stepId's `type` in workflowConfig.steps, not by the key name itself."
+      }
+    },
+
+    "triggerStepConfig": {
+      "type": "object",
+      "required": ["title", "description", "buttonText", "triggerType", "formGroups", "fields", "tags"],
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "buttonText": { "type": "string" },
+        "triggerType": { "const": "CLIENT", "description": "Only confirmed value - a manual/form-submit trigger. A widget-click trigger (seen in a customer's separate documented example, not independently confirmed in this project) may use a different value - unconfirmed." },
+        "formGroups": { "type": "array", "items": { "$ref": "#/$defs/formGroup" } },
+        "fields": { "type": "array", "items": { "$ref": "#/$defs/triggerField" } },
+        "tags": { "type": "object", "description": "Empty object in every confirmed example." }
+      }
+    },
+
+    "transaction": {
+      "type": "object",
+      "description": "One M3 API transaction call, keyed by its own generated instance id (e.g. \"xN9MwyGBpt\" - leading 'x' + 10 mixed-case alphanumeric chars, shape confirmed, exact generation algorithm not) inside an API-type step's stepConfig entry.",
+      "required": ["id", "stepId", "programName", "transactionName", "name", "source", "connectionId", "executionOrder", "extendedGrouping", "input", "output", "type"],
+      "properties": {
+        "id": { "type": "string", "description": "Same value as this object's own key." },
+        "stepId": { "type": "string", "description": "The API step's stepId this transaction belongs to, e.g. \"m3_api_1\"." },
+        "programName": { "type": "string", "description": "M3 program, e.g. \"MMS200MI\"." },
+        "transactionName": { "type": "string", "description": "M3 transaction, e.g. \"Get\"." },
+        "name": { "type": "string", "description": "Same value as transactionName in every confirmed example." },
+        "source": { "const": "M3" },
+        "connectionId": { "type": "string", "pattern": "^CONNECTION-[0-9a-f]{32}$" },
+        "executionOrder": { "type": "integer", "description": "Must start at 1 with no gaps, in document/intended-execution order." },
+        "extendedGrouping": { "type": "array", "description": "Empty array in every confirmed example." },
+        "input": { "type": "object", "additionalProperties": { "$ref": "#/$defs/inputField" }, "description": "Keyed by M3 field name." },
+        "output": { "type": "object", "additionalProperties": { "$ref": "#/$defs/outputField" }, "description": "Keyed by M3 field name. A field referenced elsewhere via an API-chain ref MUST be declared here on its producer, even if it has no Excel column mapping - synthesize a minimal declaration (on any unused column letter) if needed; a runtime SqliteError results otherwise." },
+        "type": { "const": "ADD", "description": "The ONLY value confirmed to work reliably across multiple real multi-transaction workflows, regardless of whether the M3 transaction itself lists/gets/updates/adds. A manually-built single-transaction test workflow showed LIST/GET in a different context, so this field may carry more meaning than currently understood - but ADD is the safe default. Its absence is the strongest known cause of an M3 API step rendering completely inert (no transactions visible) in the builder." },
+        "maxRows": { "type": "integer", "description": "Only present on list-style transactions (mirrors Classic's LstApi MaxRows). When present, defaultInputConfig and hasSpreadSheetInput (both below) are also present." },
+        "defaultInputConfig": { "type": "object" },
+        "hasSpreadSheetInput": { "type": "boolean" },
+        "basedOnTransaction": { "type": "string", "description": "The producing transaction's own instance id (NOT a name) - this transaction only runs after that one completes." },
+        "runOnFailure": { "type": "boolean", "description": "Whether to run even if basedOnTransaction failed." },
+        "_needs_review": { "type": "string", "description": "Not a real Live field - a convention used by this project's own tooling to flag something it couldn't resolve confidently. Safe to omit when hand-authoring; safe to ignore/strip when reading tool output." }
+      }
+    },
+
+    "inputField": {
+      "type": "object",
+      "required": ["name", "descr", "type", "length", "mandatory", "fieldType", "isMapped", "hasGrouping", "source"],
+      "properties": {
+        "name": { "type": "string" },
+        "descr": { "type": "string", "description": "Human label. Use the real M3 field description when known; \"UNKNOWN\"-metadata fields still render fine, just less helpfully." },
+        "type": { "type": "string", "enum": ["STRING", "NUMERIC", "UNKNOWN"], "description": "M3 type codes A/N/D map to STRING/NUMERIC/NUMERIC respectively (D->NUMERIC is a reasonable-but-not-independently-confirmed guess, since M3 stores dates as numeric YYYYMMDD). UNKNOWN is a safe placeholder when real metadata isn't available - confirmed not to break rendering." },
+        "length": { "type": "string", "description": "String, not number." },
+        "mandatory": { "type": "boolean" },
+        "fieldType": { "const": "I" },
+        "isMapped": { "const": true },
+        "hasGrouping": { "const": false },
+        "source": { "type": "string", "enum": ["CONSTANT", "EXCEL", "CLIENT", "API"] },
+        "sourceType": { "const": "COLUMN", "description": "Present only when source=EXCEL." },
+        "value": {
+          "description": "Meaning depends on source: CONSTANT -> the key into workflowConfig.constants (e.g. \"CONSTANT_ALWT\"), NOT the literal value itself. EXCEL -> the spreadsheet column letter, e.g. \"F\". CLIENT -> the real M3 field name (never a placeholder like \"Field1\" - confirmed via a real execution error when the placeholder was sent as-is). API -> \"<producerTxnId>.output.<fieldName>\"."
+        },
+        "ref": {
+          "type": "object",
+          "description": "Present for: (a) source=API, where ref={apiId: producerTxnId, name: fieldName, type: \"OUTPUT\"}; (b) a REPEATED source=CLIENT field (2nd+ occurrence of the same field name across transactions), where ref={apiId: <instance id of the FIRST transaction to declare this field as CLIENT>, name: fieldName, type: \"INPUT\"}. Without this ref on repeated CLIENT occurrences, Live creates separate fields (CONO, CONO_1, CONO_2...) instead of recognizing them as one shared trigger value - confirmed via a real test.",
+          "properties": {
+            "apiId": { "type": "string" },
+            "name": { "type": "string" },
+            "type": { "type": "string", "enum": ["OUTPUT", "INPUT"] }
+          }
+        }
+      }
+    },
+
+    "outputField": {
+      "type": "object",
+      "required": ["name", "descr", "type", "length", "mandatory", "fieldType", "isMapped", "hasGrouping", "source", "sourceType", "value"],
+      "properties": {
+        "name": { "type": "string" },
+        "descr": { "type": "string" },
+        "type": { "type": "string", "enum": ["STRING", "NUMERIC", "UNKNOWN"] },
+        "length": { "type": "string" },
+        "mandatory": { "type": "boolean" },
+        "fieldType": { "const": "O" },
+        "isMapped": { "const": true },
+        "hasGrouping": { "const": false },
+        "source": { "const": "EXCEL" },
+        "sourceType": { "const": "COLUMN" },
+        "value": { "type": "string", "description": "Excel column letter this field is written to." }
+      }
+    },
+
+    "excelStepConfig": {
+      "type": "object",
+      "description": "M3-API-SPECIFIC - confirmed directly (not inferred) that excel_1 must only be used alongside an m3_api_1 step. Attaching excel_1 after a REST API/Transform/Code chain with no M3 API step caused a real save failure in the builder UI; it had to be manually deleted. excel_1's own column entries only ever reference an M3 API transaction's instance id (\"<txnId>.input|output.<field>\") - it has no way to reference a Transform/REST API/Code step's output at all, so pairing it with anything else was never a valid combination.",
+      "required": ["sourceSheet"],
+      "properties": {
+        "sourceSheet": {
+          "type": "object",
+          "required": ["fields", "cells", "sortOrder"],
+          "properties": {
+            "fields": {
+              "type": "object",
+              "required": ["sheetName", "startColumn", "endColumn", "primaryHeaderRow", "secondaryHeaderRow", "dataRow", "primaryHeaderStyle", "secondaryHeaderStyle", "dataRowStyle", "columns"],
+              "properties": {
+                "sheetName": { "type": "string" },
+                "startColumn": { "type": "string" },
+                "endColumn": { "type": "string" },
+                "primaryHeaderRow": { "type": "integer", "description": "dataRow - 2 in every confirmed example." },
+                "secondaryHeaderRow": { "type": "integer", "description": "dataRow - 1 in every confirmed example." },
+                "dataRow": { "type": "integer" },
+                "primaryHeaderStyle": { "type": "object" },
+                "secondaryHeaderStyle": { "type": "object" },
+                "dataRowStyle": { "type": "object" },
+                "columns": {
+                  "type": "object",
+                  "description": "Keyed by column letter, e.g. \"F\". A SECOND field genuinely reading the same column (e.g. two different transactions both reading column F as separate INPUT fields) gets a second entry keyed \"<column>-1\" - confirmed correct via a real matched GET response, field-for-field. The plain (non -1) slot goes to whichever transaction is parsed/declared first.",
+                  "additionalProperties": { "$ref": "#/$defs/excelColumn" }
+                }
+              }
+            },
+            "cells": {
+              "type": "object",
+              "properties": { "contents": { "type": "object" }, "styleInfo": { "type": "object" } },
+              "description": "Empty contents/styleInfo in every confirmed example - this is where a fixed single-cell reference would go, not yet needed/tested."
+            },
+            "sortOrder": { "type": "array", "description": "Empty array in every confirmed example." }
+          }
+        }
+      }
+    },
+
+    "excelColumn": {
+      "type": "object",
+      "required": ["fieldId", "type", "stepId", "field", "primaryHeader", "secondaryHeader"],
+      "properties": {
+        "fieldId": { "type": "string", "description": "\"<m3ApiTxnInstanceId>.output.<field>\" for an output/export column, or \"...input.<field>\" for an input-side column." },
+        "type": { "const": "API" },
+        "stepId": { "type": "string", "description": "The M3 API step's stepId, e.g. \"m3_api_1\"." },
+        "field": {
+          "type": "object",
+          "properties": { "fieldId": { "type": "string" }, "fieldName": { "type": "string" }, "type": { "const": "API" }, "datatype": { "type": "string" } }
+        },
+        "primaryHeader": { "type": "object", "properties": { "type": { "const": "API" }, "value": { "type": "string", "description": "Human label, shown in the header row." }, "fieldId": { "type": "string" } } },
+        "secondaryHeader": {
+          "type": "object",
+          "properties": { "type": { "const": "API" }, "value": { "type": "string", "description": "Raw field name, e.g. \"ITNO\"." }, "fieldId": { "type": "string" } },
+          "description": "For a \"-1\" dual-role column specifically: this is a COPY of the plain slot's own secondaryHeader (including its fieldId, pointing at the OTHER transaction) - confirmed to mirror a real example exactly rather than being derived fresh."
+        }
+      }
+    },
+
+    "genericFilterStepConfig": {
+      "type": "object",
+      "description": "Filters raw Excel ROW data before the M3 API step runs (distinct from a separate, unrelated \"M3 Filter\"/m3_filter_1/type FILTER step which filters a transaction's OUTPUT rows after the call - not documented here, only seen once). Runs once for the WHOLE M3 API step - cannot gate one transaction while another runs unconditionally.",
+      "required": ["all"],
+      "properties": {
+        "all": { "type": "array", "items": { "$ref": "#/$defs/filterCondition" }, "description": "Confirmed as an AND-combined list (\"all\") - no confirmed OR example exists." }
+      }
+    },
+
+    "filterCondition": {
+      "type": "object",
+      "properties": {
+        "clientKey": { "type": "string", "description": "\"Filter_<Column>\" - also the paired trigger field's fieldId." },
+        "operator": { "type": "string", "enum": ["equal", "notEqual"] },
+        "dataType": { "const": "STRING", "description": "Only confirmed for string-like columns - no NUMERIC example tested." },
+        "logicalType": { "const": "AND" },
+        "from": { "const": "Row" },
+        "defaultValue": { "type": "string" },
+        "source": { "const": "CLIENT", "description": "Creates an EDITABLE trigger field with this default - there is no confirmed fixed/non-editable/hidden variant." },
+        "fact": { "type": "string", "description": "The Excel column letter being filtered on." },
+        "value": { "type": "string", "description": "Literally the template string \"{{ header.Filter_<Column> }}\", not a real runtime-substituted value." }
+      }
+    },
+
+    "transformStepConfig": {
+      "type": "object",
+      "description": "type=TRANSFORMER_MORPH in workflowConfig.steps. Confirmed end-to-end: a real template with this shape rendered and evaluated correctly in the builder's own Input/Output preview panel. WARNING (real, observed risk): save-time validation for Transform is loose - a malformed template can have its content silently disappear/reset rather than failing to save with a clear error.",
+      "required": ["template", "trimAll"],
+      "properties": {
+        "template": {
+          "type": "string",
+          "description": "A JSONata expression, as a plain string (not nested JSON). Available bindings, confirmed from Live's own default/placeholder template for a fresh Transform step: `body` and `header` are plain paths into the PREVIOUS step's output (no $ prefix - e.g. \"body.hello\"), while `$context` is a bound JSONata variable (e.g. \"$context.data.trigger.body[0].\\\"Order Number\\\"\" to reach a trigger field with a space in its name - use bracket/quote notation for field names containing spaces). To reference a specific earlier step by id rather than just \"the previous step\": \"$context.data.all.<stepId>.body...\", e.g. $context.data.all.rest_api_1.body.results.records."
+        },
+        "trimAll": { "const": true, "description": "Only value seen; meaning not independently investigated." }
+      }
+    },
+
+    "restApiStepConfig": {
+      "type": "object",
+      "description": "type=GENERIC_API in workflowConfig.steps. connectionId is OPTIONAL - confirmed via the builder's own \"Use connection\" toggle, which is OFF when a REST API step has no connectionId. UNCONFIRMED: whether \"endpoint\"/\"bodyPath\" reliably round-trip into the builder UI's own display - a real POST echoed both fields back correctly in the API response, but the builder UI showed them as empty placeholders while method/headers (sibling fields) rendered correctly from the same stored JSON. Treat this as a real, unresolved observation, not settled either way.",
+      "required": ["endpoint", "method", "headers"],
+      "properties": {
+        "connectionId": { "type": "string", "pattern": "^CONNECTION-[0-9a-f]{32}$", "description": "Omit entirely if not using a stored Vince connection (i.e. calling a plain external URL)." },
+        "endpoint": { "type": "string", "format": "uri" },
+        "method": { "type": "string", "description": "Lowercase in every confirmed example, e.g. \"post\"." },
+        "headers": { "type": "object", "additionalProperties": { "type": "string" } },
+        "bodyPath": { "type": "string", "description": "A JSONata expression selecting the request body from the previous step's output, e.g. \"$\" (whole previous output) or \"$.body\". Confirmed key name and usage; this is the \"Body path\" mode in the builder UI." },
+        "body": { "description": "The builder UI shows a \"Body\" tab as an alternative to \"Body path\" (literal body instead of a referenced/derived one) - visible in the UI, but its JSON key/shape is NOT confirmed. Do not assume this is literally \"body\" without checking." }
+      }
+    },
+
+    "codeStepConfig": {
+      "type": "object",
+      "description": "type=GENERIC_CODE in workflowConfig.steps.",
+      "required": ["content"],
+      "properties": {
+        "content": {
+          "type": "string",
+          "description": "A full Node.js module as a string: `module.exports = async function (prevStep, allSteps, trigger) { ... }`. Confirmed sandboxed require()-able modules: `authorizedAxios` and `getContext` - pattern `const connection = await getContext('globals.connection', CONNECTION_ID); const axios = await authorizedAxios(connection);` to reach a stored connection and get an authenticated HTTP client from inside Code (a third way to reach a connection, alongside REST API's own connectionId/toggle)."
+        }
+      }
+    }
+  }
+}

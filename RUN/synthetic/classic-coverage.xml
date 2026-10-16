@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SYNTHETIC - hand-authored 2026-09-10, NOT a real Classic export.
+
+  Purpose: a converter coverage fixture. It deliberately exercises every
+  Classic construct VinceForge knows about, in one file, so a change to
+  source_classic_xml.py or build.py can be checked against all of them at
+  once instead of against the two real files' partial coverage.
+
+  What makes it trustworthy as a fixture, and what does NOT:
+    - Every element, attribute, M3 program, transaction and field name in
+      here is COPIED from RUN/C05_MMS100_Destruction_Order_ADD_1.4.xml or
+      RUN/Existing Price Lists.xml. Nothing is invented at that level.
+    - What IS synthetic is the COMBINATION: these blocks, filters and
+      groupings never co-occurred in one real file. Two API-chain refs
+      (*OIS017MI....) reuse the confirmed *PROGRAM.Transaction.FIELD
+      syntax with price-list field names it was not observed on.
+    - So this file is NOT evidence about Classic. Do not cite it as a
+      source, do not infer Classic behaviour from it, and do not import it
+      into a real Classic/VXL installation expecting it to run - its
+      conformance to VinceExcelConfig.xsd has never been checked.
+
+  It will also not answer the open spreadsheet-row-shape question; that
+  needs a generic pipeline executed in a real tenant (see
+  docs/vince-generic-m3-pipeline.md open question 4).
+-->
+<VinceExcelConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="VinceExcelConfig.xsd">
+
+  <!--
+    EXPORT block: reads M3 into the sheet. One <LstApi> (the primary list
+    call) whose <Cell>s map output fields onto columns A-G, and whose
+    inputs are "*FieldN" - Classic's placeholder syntax for a value the
+    person running the workflow types in. The converter turns those into
+    CLIENT trigger fields, using the REAL M3 field name rather than
+    "Field1", and column letters here feed the "*<letter> that an Export
+    also writes" -> API_CHAIN redirect in _classify_source.
+  -->
+  <Export Label="Extract Price Lists" TargetSheetName="Price Lists">
+    <LstApi MaxRows="10000" OutputStartRow="3">
+      <M3Api Program="CMS100MI" Transaction="LstC05_OPRICH">
+        <InputField Name="F_FVDT" Type="Date" Value="*Field1" Label="From Valid from" />
+        <InputField Name="T_FVDT" Type="Date" Value="*Field2" Label="To Valid from" />
+        <InputField Name="F_CUNO" Value="*Field3" Label="From Customer" IsLowerCase="false" />
+        <InputField Name="T_CUNO" Value="*Field4" Label="To Customer" IsLowerCase="false" />
+        <InputField Name="OJACGR" Value="*Field5" Label="DIVI/ACGR" IsLowerCase="false" />
+      </M3Api>
+      <Cell Column="A" Value="*OJPRRF" />
+      <Cell Column="B" Value="*OJCUCD" />
+      <Cell Column="C" Value="*OJCUNO" />
+      <Cell Column="D" Value="*OJFVDT" Type="date" />
+      <Cell Column="E" Value="*OJLVDT" Type="date" />
+      <Cell Column="F" Value="*OJTX40" />
+      <Cell Column="G" Value="*OJTX15" />
+    </LstApi>
+  </Export>
+
+  <!--
+    IMPORT block 1 of 2: writes the sheet back into M3.
+
+    Sheet settings live on <Import> itself, not on the details:
+    InputStartRow (which row the data starts on), MessageColumn (where
+    Classic writes a per-row status message - Live has no confirmed
+    equivalent, so the converter reports it and generates nothing) and
+    SourceSheetName.
+
+    Note InputStartRow="8" here versus "9" in block 2. THAT is the
+    disagreement a single Live workflow cannot absorb, because excel_1
+    carries one dataRow for the whole grid.
+
+    MessageColumn differs too (BU vs BV) but is NOT a constraint: Live has
+    no confirmed equivalent, so nothing is generated from it either way.
+    Listed here only because it is easy to mistake for one.
+  -->
+  <Import Label="Validate Price List Input" InputStartRow="8" MessageColumn="BU" SourceSheetName="PriceList">
+
+    <!--
+      GROUPING. Rows sharing the same B/C/D/E values form one group, and
+      <StartRun> fires ONCE PER GROUP, on the group's first row. Confirmed
+      2026-09-10: group breaks are detected against the PREVIOUS row only,
+      so the sheet must be sorted by these columns.
+
+      This StartRun has NO <Cell> - real behaviour, taken from "Existing
+      Price Lists": its only consumers are the <BasedOnTransaction>
+      references below, i.e. "did the user lookup succeed".
+
+      Source="UserID" is Classic filling in the running user's M3 user id.
+      Live has no confirmed equivalent, so the converter degrades it to an
+      editable trigger field and flags it. Until 2026-09-10 this was read
+      as a spreadsheet column literally named USERID.
+    -->
+    <ImportHeading GroupColumns="B C D E" IsCritical="true">
+      <StartRun>
+        <M3Api Program="MNS150MI" Transaction="SelUsers" MessageColumn="BI">
+          <InputField Name="FRES" Value="*USERID" Source="UserID" Label="From User" />
+          <InputField Name="TRES" Value="*USERID" Source="UserID" Label="To User" />
+        </M3Api>
+      </StartRun>
+    </ImportHeading>
+
+    <!--
+      An authority check. Source="Constant" is an explicit fixed value;
+      IsHidden="true" means Classic hides it from whoever runs the
+      workflow, which Live's editable trigger fields cannot express (the
+      converter flags that too).
+
+      The <Cell> is an ImportDetail-level output mapping: this call's ALO2
+      output goes to column BK. Unread until 2026-09-10, and load-bearing
+      - a RowFilter names a COLUMN, so the only way to know which call
+      produces the value a filter gates on is the Cell that writes it.
+    -->
+    <ImportDetail IsCritical="true">
+      <M3Api Program="AUTCHKMI" Transaction="ChkAuthority" MessageColumn="BJ">
+        <InputField Name="APGM" Value="OIS017" Source="Constant" Label="Check program" IsHidden="true" IsLowerCase="false" />
+        <BasedOnTransaction TransactionName="MNS150MI.SelUsers" TransactionFailed="false" />
+      </M3Api>
+      <Cell Value="*ALO2" Column="BK" Type="decimal" />
+    </ImportDetail>
+
+    <ImportDetail IsCritical="true">
+      <M3Api Program="AUTCHKMI" Transaction="ChkAutTblRcd" MessageColumn="BL">
+        <InputField Name="WHLO" Value="*Y" Label="Warehouse" IsLowerCase="false" />
+        <BasedOnTransaction TransactionName="AUTCHKMI.ChkAuthority" TransactionFailed="false" />
+      </M3Api>
+      <Cell Value="*TX05" Column="BM" Type="string" />
+    </ImportDetail>
+
+    <!--
+      BLOCK-LEVEL filter: a sibling of the ImportDetails, not inside one,
+      so it gates the WHOLE block. This is an exact semantic match for
+      Live's GENERIC_FILTER step, which also runs once before everything,
+      so the converter puts it straight in with no uniformity check.
+      Dropped silently until 2026-09-10, which made converted workflows
+      run for rows Classic skips.
+    -->
+    <RowFilterEQ>
+      <RowFilter Column="BH" Value="OK" Label="PL1 and PL2 input valid. check" IsHidden="true" IsLower="false" />
+    </RowFilterEQ>
+  </Import>
+
+  <!--
+    IMPORT block 2 of 2. Two real conflicts with block 1: a different
+    InputStartRow (9 vs 8), and a different gate situation (block 1 gates
+    the whole block on BH == "OK", this one has no block-level filter).
+    Either of those two alone forces the split, since excel_1 has one
+    dataRow and generic_filter_1 one gate. The differing MessageColumn
+    does not - see block 1.
+
+    Both are here deliberately: this fixture is testing the split path.
+    Two blocks that AGREED on sheet, data row and gate could in principle
+    go into one workflow as a longer transaction chain - the converter
+    still splits them, and RUN/synthetic/README.md's sibling discussion in
+    the migration summary ("Read every <Export> and <Import> block")
+    records why that is a semantic question and not just an optimisation.
+  -->
+  <Import Label="Add Or Update Price List" InputStartRow="9" MessageColumn="BV" SourceSheetName="PriceList">
+
+    <!--
+      Grouping again, but this StartRun DOES write a <Cell>: its ALO2
+      output lands in column BO. Confirmed: that value is written to the
+      group's FIRST ROW ONLY, with no fill-down - so the per-call filter
+      below, which reads BO, passes on a group's first row and fails on
+      every other row of the group. Live runs every transaction per row
+      and has no group concept, so build.py reports this divergence rather
+      than translating it.
+    -->
+    <ImportHeading GroupColumns="B C D E" IsCritical="true">
+      <StartRun>
+        <M3Api Program="AUTCHKMI" Transaction="ChkAuthority" MessageColumn="BN">
+          <InputField Name="APGM" Value="OIS017" Source="Constant" Label="Check program" IsHidden="true" IsLowerCase="false" />
+        </M3Api>
+        <Cell Value="*ALO2" Column="BO" Type="decimal" />
+      </StartRun>
+    </ImportHeading>
+
+    <!--
+      PER-CALL filter, gating THIS detail only, on columns written by
+      earlier calls (BO by the StartRun, BM by block 1's ChkAutTblRcd).
+      This is the shape Live's Generic Filter cannot express - it applies
+      to the whole M3 API step, so auto-translating it would also gate
+      calls that must run unconditionally. The converter flags it per
+      transaction instead. The generic pipeline path can express it.
+    -->
+    <ImportDetail IsCritical="false">
+      <M3Api Program="OIS017MI" Transaction="GetPriceList" MessageColumn="BP">
+        <InputField Name="PRRF" Value="*B" Label="Pricelist" IsLowerCase="false" />
+        <InputField Name="CUCD" Value="*C" Label="Currency" IsLowerCase="false" />
+        <InputField Name="CUNO" Value="*D" Label="Customernumber" IsLowerCase="false" />
+        <InputField Name="FVDT" Type="Date" Value="*E" Label="Validfrom" />
+      </M3Api>
+      <RowFilterEQ>
+        <RowFilter Column="BO" Value="1" Label="authority ok" IsHidden="true" IsLower="false" />
+        <RowFilter Column="BM" Value="YES" Label="table record ok" IsHidden="true" IsLower="false" />
+      </RowFilterEQ>
+    </ImportDetail>
+
+    <!--
+      GET-OR-CREATE. TransactionFailed="true" means "run this only if the
+      referenced call FAILED" - i.e. the price list was not found, so add
+      it. The converter emits this as runOnFailure on the transaction.
+    -->
+    <ImportDetail IsCritical="true">
+      <M3Api Program="OIS017MI" Transaction="AddPriceList" MessageColumn="BQ">
+        <InputField Name="PRRF" Value="*B" Label="Pricelist" IsLowerCase="false" />
+        <InputField Name="CUCD" Value="*C" Label="Currency" IsLowerCase="false" />
+        <InputField Name="CUNO" Value="*D" Label="Customernumber" IsLowerCase="false" />
+        <InputField Name="FVDT" Type="Date" Value="*E" Label="Validfrom" />
+        <InputField Name="LVDT" Type="Date" Value="*F" Label="Validto" />
+        <InputField Name="TX40" Value="*G" Label="Description" IsLowerCase="false" />
+        <InputField Name="SCMU" Type="Decimal" NoOfDecimals="2" Value="*K" Label="Manualupdate-salesprices" />
+        <BasedOnTransaction TransactionName="OIS017MI.GetPriceList" TransactionFailed="true" />
+      </M3Api>
+    </ImportDetail>
+
+    <!--
+      An API-CHAIN input: "*PROGRAM.Transaction.FIELD" takes its value
+      from an earlier call's output directly, not via a column. The syntax
+      is confirmed real; this particular field pairing is synthetic.
+    -->
+    <ImportDetail IsCritical="true">
+      <M3Api Program="OIZ017MI" Transaction="UpdPriceLstSel" MessageColumn="BX">
+        <InputField Name="PRRF" Value="*OIS017MI.AddPriceList.PRRF" Label="Pricelist" IsLowerCase="false" />
+        <InputField Name="CUNO" Value="*D" Label="Customer" IsLowerCase="false" />
+        <InputField Name="CUCD" Value="*C" Label="Currency" IsLowerCase="false" />
+        <InputField Name="FVDT" Type="Date" Value="*E" Label="From date" />
+        <BasedOnTransaction TransactionName="OIS017MI.AddPriceList" TransactionFailed="false" />
+      </M3Api>
+    </ImportDetail>
+
+    <!--
+      A SECOND AUTCHKMI.ChkAuthority in the same block. Classic references
+      calls by NAME, so a reused name is ambiguous; the rule is "nearest
+      matching call defined EARLIER in the file wins". The detail after
+      this one must therefore resolve to THIS occurrence, not to the
+      StartRun's. Real files do this - it is not a contrived case.
+    -->
+    <ImportDetail IsCritical="true">
+      <M3Api Program="AUTCHKMI" Transaction="ChkAuthority" MessageColumn="BR">
+        <InputField Name="APGM" Value="OIS021" Source="Constant" Label="Check program" IsHidden="true" IsLowerCase="false" />
+      </M3Api>
+      <Cell Value="*ALO2" Column="BQ" Type="decimal" />
+    </ImportDetail>
+
+    <!--
+      RowFilterGT: an operator Live's Generic Filter has NO confirmed
+      equivalent for (only equal/notEqual are confirmed), so the gate is
+      left off and reported rather than approximated. IncludeBlank="true"
+      on an empty Value is carried through and repeated in the review
+      note, but its meaning is unconfirmed and deliberately not acted on -
+      it reads as self-contradictory ("greater than nothing, but also
+      include blanks").
+    -->
+    <ImportDetail IsCritical="true">
+      <M3Api Program="OIS017MI" Transaction="AddBasePrice" MessageColumn="BS">
+        <InputField Name="PRRF" Value="*B" Label="Pricelist" IsLowerCase="false" />
+        <InputField Name="WHLO" Value="*Y" Label="Warehouse" IsLowerCase="false" />
+        <BasedOnTransaction TransactionName="AUTCHKMI.ChkAuthority" TransactionFailed="false" />
+      </M3Api>
+      <RowFilterEQ>
+        <RowFilter Column="BQ" Value="1" Label="second authority ok" IsHidden="true" IsLower="false" />
+      </RowFilterEQ>
+      <RowFilterGT>
+        <RowFilter Column="AM" Value="" Label="Item number" IncludeBlank="true" IsHidden="true" IsLower="false" />
+      </RowFilterGT>
+    </ImportDetail>
+  </Import>
+</VinceExcelConfig>

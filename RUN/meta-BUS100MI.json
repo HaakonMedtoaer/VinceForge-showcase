@@ -1,0 +1,2739 @@
+{
+  "count": 24,
+  "items": [
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "descr": "Company",
+          "length": "3",
+          "type": "N",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Division",
+          "type": "A",
+          "mandatory": "1",
+          "name": "DIVI",
+          "length": "3"
+        },
+        {
+          "type": "N",
+          "descr": "Budget number",
+          "mandatory": "1",
+          "name": "BUNO",
+          "length": "3"
+        },
+        {
+          "length": "4",
+          "name": "BVER",
+          "mandatory": "1",
+          "type": "A",
+          "descr": "Budget version"
+        },
+        {
+          "descr": "Description",
+          "length": "40",
+          "name": "TX40",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "name": "TX15",
+          "type": "A",
+          "mandatory": "0",
+          "length": "15",
+          "descr": "Name"
+        },
+        {
+          "mandatory": "1",
+          "descr": "Start period - budget",
+          "name": "BSPR",
+          "type": "N",
+          "length": "6"
+        },
+        {
+          "mandatory": "1",
+          "type": "N",
+          "name": "CRTP",
+          "descr": "Exchange rate type",
+          "length": "2"
+        },
+        {
+          "name": "NPAM",
+          "length": "3",
+          "mandatory": "1",
+          "descr": "Number of periods",
+          "type": "N"
+        },
+        {
+          "length": "2",
+          "name": "ROPP",
+          "type": "N",
+          "mandatory": "0",
+          "descr": "Rounding-off category"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Update balance file",
+          "length": "1",
+          "name": "UPDB",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Allocation template",
+          "type": "A",
+          "name": "DTMP",
+          "length": "8"
+        },
+        {
+          "name": "ACGR",
+          "mandatory": "0",
+          "length": "10",
+          "descr": "Object access group",
+          "type": "A"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "descr": "Company",
+          "length": "3",
+          "name": "CONO",
+          "type": "N",
+          "mandatory": "0"
+        },
+        {
+          "name": "DIVI",
+          "type": "A",
+          "descr": "Division",
+          "length": "3",
+          "mandatory": "1"
+        },
+        {
+          "mandatory": "1",
+          "type": "N",
+          "name": "BUNO",
+          "length": "3",
+          "descr": "Budget number"
+        },
+        {
+          "mandatory": "1",
+          "descr": "Budget version",
+          "length": "4",
+          "type": "A",
+          "name": "BVER"
+        },
+        {
+          "length": "10",
+          "type": "A",
+          "mandatory": "1",
+          "name": "AIT1",
+          "descr": "Accounting dimension 1"
+        },
+        {
+          "length": "10",
+          "descr": "Accounting dimension 2",
+          "mandatory": "0",
+          "type": "A",
+          "name": "AIT2"
+        },
+        {
+          "length": "10",
+          "name": "AIT3",
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 3"
+        },
+        {
+          "type": "A",
+          "descr": "Accounting dimension 4",
+          "length": "10",
+          "name": "AIT4",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "name": "AIT5",
+          "descr": "Accounting dimension 5",
+          "length": "10",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 6",
+          "name": "AIT6"
+        },
+        {
+          "length": "10",
+          "descr": "Accounting dimension 7",
+          "type": "A",
+          "mandatory": "0",
+          "name": "AIT7"
+        },
+        {
+          "mandatory": "1",
+          "descr": "Currency",
+          "name": "CUCD",
+          "type": "A",
+          "length": "3"
+        },
+        {
+          "type": "N",
+          "descr": "Curve",
+          "name": "AMTN",
+          "mandatory": "0",
+          "length": "3"
+        },
+        {
+          "descr": "Total Foreign currency amount - budget",
+          "type": "N",
+          "length": "17",
+          "name": "BCUA",
+          "mandatory": "0"
+        },
+        {
+          "name": "BUDQ",
+          "descr": "Total Budget quantity",
+          "mandatory": "0",
+          "type": "N",
+          "length": "11"
+        },
+        {
+          "descr": "Foreign currency amount - budget 1",
+          "length": "17",
+          "mandatory": "0",
+          "name": "BCU1",
+          "type": "N"
+        },
+        {
+          "type": "N",
+          "length": "17",
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget 2",
+          "name": "BCU2"
+        },
+        {
+          "name": "BCU3",
+          "length": "17",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Foreign currency amount - budget 3"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget 4",
+          "length": "17",
+          "name": "BCU4",
+          "type": "N"
+        },
+        {
+          "name": "BCU5",
+          "length": "17",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Foreign currency amount - budget 5"
+        },
+        {
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Foreign currency amount - budget 6",
+          "name": "BCU6",
+          "length": "17"
+        },
+        {
+          "type": "N",
+          "descr": "Foreign currency amount - budget 7",
+          "length": "17",
+          "name": "BCU7",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "length": "17",
+          "descr": "Foreign currency amount - budget 8",
+          "name": "BCU8",
+          "type": "N"
+        },
+        {
+          "name": "BCU9",
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget 9",
+          "type": "N",
+          "length": "17"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget 10",
+          "type": "N",
+          "name": "BC10",
+          "length": "17"
+        },
+        {
+          "type": "N",
+          "length": "17",
+          "name": "BC11",
+          "descr": "Foreign currency amount - budget 11",
+          "mandatory": "0"
+        },
+        {
+          "name": "BC12",
+          "type": "N",
+          "length": "17",
+          "descr": "Foreign currency amount - budget 12",
+          "mandatory": "0"
+        },
+        {
+          "length": "17",
+          "type": "N",
+          "name": "BC13",
+          "descr": "Foreign currency amount - budget 13",
+          "mandatory": "0"
+        },
+        {
+          "name": "BC14",
+          "type": "N",
+          "descr": "Foreign currency amount - budget 14",
+          "mandatory": "0",
+          "length": "17"
+        },
+        {
+          "type": "N",
+          "mandatory": "0",
+          "name": "BC15",
+          "length": "17",
+          "descr": "Foreign currency amount - budget 15"
+        },
+        {
+          "type": "N",
+          "length": "11",
+          "name": "BUD1",
+          "mandatory": "0",
+          "descr": "Budget quantity 1"
+        },
+        {
+          "name": "BUD2",
+          "length": "11",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Budget quantity 2"
+        },
+        {
+          "descr": "Budget quantity 3",
+          "mandatory": "0",
+          "type": "N",
+          "name": "BUD3",
+          "length": "11"
+        },
+        {
+          "descr": "Budget quantity 4",
+          "mandatory": "0",
+          "length": "11",
+          "name": "BUD4",
+          "type": "N"
+        },
+        {
+          "length": "11",
+          "descr": "Budget quantity 5",
+          "name": "BUD5",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "name": "BUD6",
+          "type": "N",
+          "descr": "Budget quantity 6",
+          "length": "11"
+        },
+        {
+          "descr": "Budget quantity 7",
+          "length": "11",
+          "type": "N",
+          "name": "BUD7",
+          "mandatory": "0"
+        },
+        {
+          "length": "11",
+          "type": "N",
+          "descr": "Budget quantity 8",
+          "name": "BUD8",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Budget quantity 9",
+          "length": "11",
+          "type": "N",
+          "name": "BUD9"
+        },
+        {
+          "length": "11",
+          "name": "BU10",
+          "type": "N",
+          "mandatory": "0",
+          "descr": "Budget quantity 10"
+        },
+        {
+          "length": "11",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Budget quantity 11",
+          "name": "BU11"
+        },
+        {
+          "descr": "Budget quantity 12",
+          "type": "N",
+          "length": "11",
+          "name": "BU12",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Budget quantity 13",
+          "name": "BU13",
+          "mandatory": "0",
+          "type": "N",
+          "length": "11"
+        },
+        {
+          "length": "11",
+          "name": "BU14",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Budget quantity 14"
+        },
+        {
+          "mandatory": "0",
+          "name": "BU15",
+          "length": "11",
+          "type": "N",
+          "descr": "Budget quantity 15"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "length": "3",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Company"
+        },
+        {
+          "length": "3",
+          "type": "A",
+          "name": "DIVI",
+          "descr": "Division",
+          "mandatory": "1"
+        },
+        {
+          "length": "3",
+          "type": "N",
+          "descr": "Budget number",
+          "name": "BUNO",
+          "mandatory": "1"
+        },
+        {
+          "name": "BVER",
+          "descr": "Budget version",
+          "length": "4",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "name": "AIT1",
+          "descr": "Accounting dimension 1",
+          "length": "10",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "type": "A",
+          "name": "AIT2",
+          "length": "10",
+          "mandatory": "0",
+          "descr": "Accounting dimension 2"
+        },
+        {
+          "type": "A",
+          "name": "AIT3",
+          "length": "10",
+          "mandatory": "0",
+          "descr": "Accounting dimension 3"
+        },
+        {
+          "name": "AIT4",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 4"
+        },
+        {
+          "name": "AIT5",
+          "descr": "Accounting dimension 5",
+          "length": "10",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "length": "10",
+          "type": "A",
+          "name": "AIT6",
+          "descr": "Accounting dimension 6"
+        },
+        {
+          "name": "AIT7",
+          "mandatory": "0",
+          "descr": "Accounting dimension 7",
+          "type": "A",
+          "length": "10"
+        },
+        {
+          "name": "CUCD",
+          "length": "3",
+          "descr": "Currency",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "type": "N",
+          "mandatory": "0",
+          "name": "AMTN",
+          "descr": "Curve",
+          "length": "3"
+        },
+        {
+          "type": "N",
+          "name": "BUPE",
+          "descr": "Budget period",
+          "mandatory": "1",
+          "length": "6"
+        },
+        {
+          "type": "N",
+          "length": "17",
+          "descr": "Foreign currency amount - budget",
+          "mandatory": "0",
+          "name": "BCUA"
+        },
+        {
+          "type": "N",
+          "length": "11",
+          "name": "BUDQ",
+          "mandatory": "0",
+          "descr": "Budget quantity"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "descr": "Company",
+          "type": "N",
+          "mandatory": "0",
+          "name": "CONO",
+          "length": "3"
+        },
+        {
+          "type": "A",
+          "name": "DIVI",
+          "mandatory": "1",
+          "descr": "Division",
+          "length": "3"
+        },
+        {
+          "length": "3",
+          "name": "BUNO",
+          "type": "N",
+          "descr": "Budget number",
+          "mandatory": "1"
+        },
+        {
+          "descr": "Budget version",
+          "mandatory": "1",
+          "name": "BVER",
+          "type": "A",
+          "length": "4"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "mandatory": "0",
+          "type": "N",
+          "length": "3",
+          "name": "CONO",
+          "descr": "Company"
+        },
+        {
+          "name": "DIVI",
+          "length": "3",
+          "mandatory": "1",
+          "type": "A",
+          "descr": "Division"
+        },
+        {
+          "descr": "Budget number",
+          "mandatory": "1",
+          "type": "N",
+          "name": "BUNO",
+          "length": "3"
+        },
+        {
+          "mandatory": "1",
+          "name": "BVER",
+          "type": "A",
+          "descr": "Budget version",
+          "length": "4"
+        },
+        {
+          "descr": "Budget period",
+          "length": "6",
+          "name": "BUPE",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "name": "AIT1",
+          "length": "10",
+          "mandatory": "1",
+          "descr": "Accounting dimension 1",
+          "type": "A"
+        },
+        {
+          "type": "A",
+          "length": "10",
+          "name": "AIT2",
+          "descr": "Accounting dimension 2",
+          "mandatory": "0"
+        },
+        {
+          "name": "AIT3",
+          "descr": "Accounting dimension 3",
+          "mandatory": "0",
+          "type": "A",
+          "length": "10"
+        },
+        {
+          "mandatory": "0",
+          "type": "A",
+          "name": "AIT4",
+          "length": "10",
+          "descr": "Accounting dimension 4"
+        },
+        {
+          "name": "AIT5",
+          "length": "10",
+          "type": "A",
+          "descr": "Accounting dimension 5",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Accounting dimension 6",
+          "length": "10",
+          "type": "A",
+          "name": "AIT6"
+        },
+        {
+          "descr": "Accounting dimension 7",
+          "type": "A",
+          "mandatory": "0",
+          "length": "10",
+          "name": "AIT7"
+        },
+        {
+          "mandatory": "1",
+          "type": "A",
+          "name": "CUCD",
+          "length": "3",
+          "descr": "Currency"
+        },
+        {
+          "length": "3",
+          "name": "AMTN",
+          "mandatory": "0",
+          "descr": "Curve",
+          "type": "N"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "mandatory": "0",
+          "length": "3",
+          "name": "CONO",
+          "descr": "Company",
+          "type": "N"
+        },
+        {
+          "type": "A",
+          "length": "3",
+          "descr": "Division",
+          "name": "DIVI",
+          "mandatory": "1"
+        },
+        {
+          "descr": "Budget number",
+          "type": "N",
+          "mandatory": "1",
+          "name": "BUNO",
+          "length": "3"
+        },
+        {
+          "name": "BVER",
+          "mandatory": "1",
+          "type": "A",
+          "length": "4",
+          "descr": "Budget version"
+        },
+        {
+          "descr": "From Accounting dimension 1",
+          "mandatory": "0",
+          "name": "FIT1",
+          "type": "A",
+          "length": "10"
+        },
+        {
+          "type": "A",
+          "descr": "To Accounting dimension 1",
+          "length": "10",
+          "name": "TIT1",
+          "mandatory": "0"
+        },
+        {
+          "name": "FIT2",
+          "mandatory": "0",
+          "descr": "From Accounting dimension 2",
+          "length": "10",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "mandatory": "0",
+          "descr": "To Accounting dimension 2",
+          "type": "A",
+          "name": "TIT2"
+        },
+        {
+          "type": "A",
+          "descr": "From Accounting dimension 3",
+          "name": "FIT3",
+          "length": "10",
+          "mandatory": "0"
+        },
+        {
+          "type": "A",
+          "length": "10",
+          "name": "TIT3",
+          "descr": "To Accounting dimension 3",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "name": "FIT4",
+          "type": "A",
+          "length": "10",
+          "descr": "From Accounting dimension 4"
+        },
+        {
+          "length": "10",
+          "mandatory": "0",
+          "type": "A",
+          "name": "TIT4",
+          "descr": "To Accounting dimension 4"
+        },
+        {
+          "name": "FIT5",
+          "descr": "From Accounting dimension 5",
+          "mandatory": "0",
+          "type": "A",
+          "length": "10"
+        },
+        {
+          "length": "10",
+          "name": "TIT5",
+          "descr": "To Accounting dimension 5",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "length": "10",
+          "name": "FIT6",
+          "descr": "From Accounting dimension 6",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "length": "10",
+          "descr": "To Accounting dimension 6",
+          "mandatory": "0",
+          "type": "A",
+          "name": "TIT6"
+        },
+        {
+          "length": "10",
+          "descr": "From Accounting dimension 7",
+          "mandatory": "0",
+          "type": "A",
+          "name": "FIT7"
+        },
+        {
+          "type": "A",
+          "mandatory": "0",
+          "descr": "To Accounting dimension 7",
+          "name": "TIT7",
+          "length": "10"
+        },
+        {
+          "length": "6",
+          "name": "PERF",
+          "mandatory": "1",
+          "type": "N",
+          "descr": "FromBudget period"
+        },
+        {
+          "name": "PERT",
+          "length": "6",
+          "type": "N",
+          "mandatory": "1",
+          "descr": "To Budget period"
+        }
+      ]
+    },
+    {
+      "name": "O",
+      "descr": "Input",
+      "data": [
+        {
+          "length": "3",
+          "mandatory": "0",
+          "descr": "Company",
+          "name": "CONO",
+          "type": "N"
+        },
+        {
+          "name": "DIVI",
+          "type": "A",
+          "descr": "Division",
+          "length": "3",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Budget number",
+          "length": "3",
+          "type": "N",
+          "name": "BUNO"
+        },
+        {
+          "descr": "Budget version",
+          "mandatory": "0",
+          "name": "BVER",
+          "type": "A",
+          "length": "4"
+        },
+        {
+          "mandatory": "0",
+          "name": "AIT1",
+          "descr": "Accounting dimension 1",
+          "type": "A",
+          "length": "10"
+        },
+        {
+          "name": "AIT2",
+          "descr": "Accounting dimension 2",
+          "length": "10",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "type": "A",
+          "descr": "Accounting dimension 3",
+          "length": "10",
+          "mandatory": "0",
+          "name": "AIT3"
+        },
+        {
+          "name": "AIT4",
+          "descr": "Accounting dimension 4",
+          "mandatory": "0",
+          "length": "10",
+          "type": "A"
+        },
+        {
+          "name": "AIT5",
+          "mandatory": "0",
+          "length": "10",
+          "type": "A",
+          "descr": "Accounting dimension 5"
+        },
+        {
+          "descr": "Accounting dimension 6",
+          "mandatory": "0",
+          "length": "10",
+          "type": "A",
+          "name": "AIT6"
+        },
+        {
+          "descr": "Accounting dimension 7",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A",
+          "name": "AIT7"
+        },
+        {
+          "type": "A",
+          "length": "3",
+          "name": "CUCD",
+          "descr": "Currency",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "type": "N",
+          "length": "3",
+          "name": "AMTN",
+          "descr": "Curve"
+        },
+        {
+          "name": "PERI",
+          "descr": "Period",
+          "length": "2",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "name": "TX15",
+          "length": "15",
+          "type": "A",
+          "descr": "Name",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Foreign currency amount - budget",
+          "name": "BCUA",
+          "mandatory": "0",
+          "type": "N",
+          "length": "17"
+        },
+        {
+          "name": "BUDQ",
+          "mandatory": "0",
+          "type": "N",
+          "length": "11",
+          "descr": "Budget quantity"
+        },
+        {
+          "length": "10",
+          "name": "FDAT",
+          "descr": "From date",
+          "mandatory": "0",
+          "type": "D"
+        },
+        {
+          "name": "TDAT",
+          "type": "D",
+          "mandatory": "0",
+          "descr": "To date",
+          "length": "10"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "descr": "Company",
+          "name": "CONO",
+          "mandatory": "0",
+          "length": "3",
+          "type": "N"
+        },
+        {
+          "name": "DIVI",
+          "length": "3",
+          "type": "A",
+          "descr": "Division",
+          "mandatory": "1"
+        },
+        {
+          "descr": "Budget number",
+          "length": "3",
+          "mandatory": "1",
+          "name": "BUNO",
+          "type": "N"
+        },
+        {
+          "type": "A",
+          "mandatory": "1",
+          "name": "BVER",
+          "descr": "Budget version",
+          "length": "4"
+        },
+        {
+          "type": "A",
+          "length": "10",
+          "name": "AIT1",
+          "descr": "Accounting dimension 1",
+          "mandatory": "1"
+        },
+        {
+          "descr": "Accounting dimension 2",
+          "type": "A",
+          "name": "AIT2",
+          "length": "10",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Accounting dimension 3",
+          "mandatory": "0",
+          "length": "10",
+          "type": "A",
+          "name": "AIT3"
+        },
+        {
+          "type": "A",
+          "descr": "Accounting dimension 4",
+          "mandatory": "0",
+          "length": "10",
+          "name": "AIT4"
+        },
+        {
+          "name": "AIT5",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 5"
+        },
+        {
+          "type": "A",
+          "descr": "Accounting dimension 6",
+          "length": "10",
+          "name": "AIT6",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Accounting dimension 7",
+          "length": "10",
+          "type": "A",
+          "name": "AIT7"
+        },
+        {
+          "descr": "Currency",
+          "name": "CUCD",
+          "mandatory": "1",
+          "type": "A",
+          "length": "3"
+        },
+        {
+          "length": "3",
+          "type": "N",
+          "name": "AMTN",
+          "descr": "Curve",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "1",
+          "name": "BUPE",
+          "length": "6",
+          "descr": "Budget period",
+          "type": "N"
+        }
+      ]
+    },
+    {
+      "name": "O",
+      "descr": "Input",
+      "data": [
+        {
+          "descr": "Company",
+          "length": "3",
+          "mandatory": "0",
+          "type": "N",
+          "name": "CONO"
+        },
+        {
+          "descr": "Division",
+          "name": "DIVI",
+          "length": "3",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "name": "BUNO",
+          "descr": "Budget number",
+          "type": "N",
+          "length": "3",
+          "mandatory": "0"
+        },
+        {
+          "type": "A",
+          "mandatory": "0",
+          "name": "BVER",
+          "length": "4",
+          "descr": "Budget version"
+        },
+        {
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 1",
+          "name": "AIT1",
+          "length": "10"
+        },
+        {
+          "type": "A",
+          "name": "AIT2",
+          "descr": "Accounting dimension 2",
+          "length": "10",
+          "mandatory": "0"
+        },
+        {
+          "length": "10",
+          "descr": "Accounting dimension 3",
+          "name": "AIT3",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "type": "A",
+          "name": "AIT4",
+          "mandatory": "0",
+          "descr": "Accounting dimension 4",
+          "length": "10"
+        },
+        {
+          "mandatory": "0",
+          "length": "10",
+          "type": "A",
+          "name": "AIT5",
+          "descr": "Accounting dimension 5"
+        },
+        {
+          "descr": "Accounting dimension 6",
+          "name": "AIT6",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "descr": "Accounting dimension 7",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A",
+          "name": "AIT7"
+        },
+        {
+          "length": "3",
+          "descr": "Currency",
+          "mandatory": "0",
+          "type": "A",
+          "name": "CUCD"
+        },
+        {
+          "length": "3",
+          "name": "AMTN",
+          "mandatory": "0",
+          "descr": "Curve",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget",
+          "name": "BCUA",
+          "length": "17",
+          "type": "N"
+        },
+        {
+          "type": "N",
+          "name": "BUDQ",
+          "mandatory": "0",
+          "descr": "Budget quantity",
+          "length": "11"
+        },
+        {
+          "descr": "Name",
+          "length": "15",
+          "type": "A",
+          "mandatory": "0",
+          "name": "TX15"
+        },
+        {
+          "type": "D",
+          "length": "10",
+          "name": "FDAT",
+          "descr": "From date",
+          "mandatory": "0"
+        },
+        {
+          "descr": "To date",
+          "type": "D",
+          "length": "10",
+          "name": "TDAT",
+          "mandatory": "0"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Company",
+          "name": "CONO",
+          "length": "3"
+        },
+        {
+          "name": "DIVI",
+          "descr": "Division",
+          "length": "3",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "descr": "Budget number",
+          "mandatory": "1",
+          "type": "N",
+          "name": "BUNO",
+          "length": "3"
+        },
+        {
+          "name": "BVER",
+          "descr": "Budget version",
+          "length": "4",
+          "mandatory": "1",
+          "type": "A"
+        }
+      ]
+    },
+    {
+      "name": "O",
+      "descr": "Input",
+      "data": [
+        {
+          "length": "3",
+          "name": "CONO",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Company"
+        },
+        {
+          "descr": "Division",
+          "type": "A",
+          "mandatory": "0",
+          "name": "DIVI",
+          "length": "3"
+        },
+        {
+          "name": "BUNO",
+          "mandatory": "0",
+          "descr": "Budget number",
+          "length": "3",
+          "type": "N"
+        },
+        {
+          "length": "4",
+          "name": "BVER",
+          "descr": "Budget version",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "mandatory": "0",
+          "length": "40",
+          "type": "A",
+          "name": "TX40",
+          "descr": "Description"
+        },
+        {
+          "name": "TX15",
+          "descr": "Name",
+          "length": "15",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "name": "BSPR",
+          "type": "N",
+          "length": "6",
+          "descr": "Start period - budget",
+          "mandatory": "0"
+        },
+        {
+          "name": "CRTP",
+          "type": "N",
+          "length": "2",
+          "descr": "Exchange rate type",
+          "mandatory": "0"
+        },
+        {
+          "name": "NPAM",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Number of periods",
+          "length": "3"
+        },
+        {
+          "length": "2",
+          "descr": "Rounding-off category",
+          "type": "N",
+          "mandatory": "0",
+          "name": "ROPP"
+        },
+        {
+          "length": "1",
+          "name": "UPDB",
+          "type": "N",
+          "descr": "Update balance file",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Allocation template",
+          "length": "8",
+          "mandatory": "0",
+          "name": "DTMP",
+          "type": "A"
+        },
+        {
+          "type": "A",
+          "mandatory": "0",
+          "name": "ACGR",
+          "descr": "Object access group",
+          "length": "10"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "mandatory": "0",
+          "length": "3",
+          "type": "N",
+          "descr": "Company"
+        },
+        {
+          "length": "3",
+          "type": "A",
+          "name": "DIVI",
+          "mandatory": "1",
+          "descr": "Division"
+        },
+        {
+          "descr": "Budget number",
+          "length": "3",
+          "name": "BUNO",
+          "mandatory": "1",
+          "type": "N"
+        },
+        {
+          "mandatory": "1",
+          "length": "4",
+          "name": "BVER",
+          "descr": "Budget version",
+          "type": "A"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "length": "3",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Company"
+        },
+        {
+          "descr": "Division",
+          "type": "A",
+          "length": "3",
+          "name": "DIVI",
+          "mandatory": "1"
+        },
+        {
+          "mandatory": "1",
+          "type": "N",
+          "descr": "Budget number",
+          "name": "BUNO",
+          "length": "3"
+        },
+        {
+          "name": "BVER",
+          "length": "4",
+          "descr": "Budget version",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "descr": "Accounting dimension 1",
+          "length": "10",
+          "name": "AIT1",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "mandatory": "0",
+          "length": "10",
+          "name": "AIT2",
+          "descr": "Accounting dimension 2",
+          "type": "A"
+        },
+        {
+          "name": "AIT3",
+          "descr": "Accounting dimension 3",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "name": "AIT4",
+          "descr": "Accounting dimension 4",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "name": "AIT5",
+          "descr": "Accounting dimension 5",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "name": "AIT6",
+          "type": "A",
+          "descr": "Accounting dimension 6",
+          "mandatory": "0",
+          "length": "10"
+        },
+        {
+          "type": "A",
+          "name": "AIT7",
+          "descr": "Accounting dimension 7",
+          "length": "10",
+          "mandatory": "0"
+        },
+        {
+          "name": "CUCD",
+          "length": "3",
+          "mandatory": "0",
+          "descr": "Currency",
+          "type": "A"
+        },
+        {
+          "descr": "Curve",
+          "length": "3",
+          "name": "AMTN",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "name": "BUPE",
+          "mandatory": "0",
+          "length": "6",
+          "type": "N",
+          "descr": "Budget period"
+        }
+      ]
+    },
+    {
+      "name": "O",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "descr": "Company",
+          "length": "3",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "type": "A",
+          "descr": "Division",
+          "length": "3",
+          "name": "DIVI",
+          "mandatory": "0"
+        },
+        {
+          "name": "BUNO",
+          "type": "N",
+          "descr": "Budget number",
+          "length": "3",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Budget version",
+          "type": "A",
+          "mandatory": "0",
+          "name": "BVER",
+          "length": "4"
+        },
+        {
+          "type": "N",
+          "name": "BUPE",
+          "mandatory": "0",
+          "descr": "Budget period",
+          "length": "6"
+        },
+        {
+          "length": "10",
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 1",
+          "name": "AIT1"
+        },
+        {
+          "name": "AIT2",
+          "descr": "Accounting dimension 2",
+          "type": "A",
+          "mandatory": "0",
+          "length": "10"
+        },
+        {
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 3",
+          "length": "10",
+          "name": "AIT3"
+        },
+        {
+          "name": "AIT4",
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 4",
+          "length": "10"
+        },
+        {
+          "name": "AIT5",
+          "type": "A",
+          "length": "10",
+          "mandatory": "0",
+          "descr": "Accounting dimension 5"
+        },
+        {
+          "mandatory": "0",
+          "length": "10",
+          "descr": "Accounting dimension 6",
+          "name": "AIT6",
+          "type": "A"
+        },
+        {
+          "type": "A",
+          "name": "AIT7",
+          "length": "10",
+          "mandatory": "0",
+          "descr": "Accounting dimension 7"
+        },
+        {
+          "descr": "Currency",
+          "name": "CUCD",
+          "length": "3",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "type": "N",
+          "name": "AMTN",
+          "descr": "Curve",
+          "length": "3",
+          "mandatory": "0"
+        },
+        {
+          "length": "15",
+          "mandatory": "0",
+          "type": "A",
+          "name": "TX15",
+          "descr": "Name"
+        },
+        {
+          "type": "N",
+          "descr": "Foreign currency amount - budget",
+          "mandatory": "0",
+          "length": "17",
+          "name": "BCUA"
+        },
+        {
+          "type": "N",
+          "descr": "Local currency amount - budget",
+          "length": "17",
+          "mandatory": "0",
+          "name": "BLAM"
+        },
+        {
+          "type": "N",
+          "length": "11",
+          "descr": "Budget quantity",
+          "name": "BUDQ",
+          "mandatory": "0"
+        },
+        {
+          "type": "N",
+          "length": "13",
+          "name": "ARAT",
+          "descr": "Exchange rate",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "descr": "From date",
+          "length": "10",
+          "name": "FDAT",
+          "type": "D"
+        },
+        {
+          "name": "TDAT",
+          "length": "10",
+          "descr": "To date",
+          "type": "D",
+          "mandatory": "0"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "mandatory": "0",
+          "type": "N",
+          "name": "CONO",
+          "descr": "Company",
+          "length": "3"
+        },
+        {
+          "length": "3",
+          "name": "DIVI",
+          "descr": "Division",
+          "type": "A",
+          "mandatory": "1"
+        },
+        {
+          "type": "N",
+          "descr": "From Budget number",
+          "mandatory": "0",
+          "name": "BUNO",
+          "length": "3"
+        },
+        {
+          "descr": "From Budget version",
+          "mandatory": "0",
+          "type": "A",
+          "name": "BVER",
+          "length": "4"
+        }
+      ]
+    },
+    {
+      "name": "O",
+      "descr": "Input",
+      "data": [
+        {
+          "mandatory": "0",
+          "name": "CONO",
+          "descr": "Company",
+          "length": "3",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "length": "3",
+          "descr": "Division",
+          "name": "DIVI",
+          "type": "A"
+        },
+        {
+          "type": "N",
+          "descr": "Budget number",
+          "length": "3",
+          "name": "BUNO",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Budget version",
+          "type": "A",
+          "length": "4",
+          "name": "BVER"
+        },
+        {
+          "name": "TX40",
+          "type": "A",
+          "mandatory": "0",
+          "length": "40",
+          "descr": "Description"
+        },
+        {
+          "name": "BSPR",
+          "mandatory": "0",
+          "length": "6",
+          "type": "N",
+          "descr": "Start period - budget"
+        },
+        {
+          "type": "N",
+          "descr": "Number of periods",
+          "mandatory": "0",
+          "length": "3",
+          "name": "NPAM"
+        },
+        {
+          "name": "BLCC",
+          "mandatory": "0",
+          "descr": "Locked budget",
+          "type": "N",
+          "length": "1"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "mandatory": "0",
+          "length": "3",
+          "type": "N",
+          "descr": "Company"
+        },
+        {
+          "name": "DIVI",
+          "type": "A",
+          "mandatory": "1",
+          "length": "3",
+          "descr": "Division"
+        },
+        {
+          "descr": "Budget number",
+          "length": "3",
+          "name": "BUNO",
+          "mandatory": "1",
+          "type": "N"
+        },
+        {
+          "descr": "Budget version",
+          "name": "BVER",
+          "length": "4",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "type": "A",
+          "mandatory": "0",
+          "name": "AIT1",
+          "descr": "Accounting dimension 1"
+        },
+        {
+          "descr": "Accounting dimension 2",
+          "mandatory": "0",
+          "name": "AIT2",
+          "length": "10",
+          "type": "A"
+        },
+        {
+          "type": "A",
+          "descr": "Accounting dimension 3",
+          "length": "10",
+          "name": "AIT3",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Accounting dimension 4",
+          "length": "10",
+          "mandatory": "0",
+          "name": "AIT4",
+          "type": "A"
+        },
+        {
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 5",
+          "length": "10",
+          "name": "AIT5"
+        },
+        {
+          "descr": "Accounting dimension 6",
+          "name": "AIT6",
+          "type": "A",
+          "length": "10",
+          "mandatory": "0"
+        },
+        {
+          "name": "AIT7",
+          "type": "A",
+          "mandatory": "0",
+          "length": "10",
+          "descr": "Accounting dimension 7"
+        },
+        {
+          "descr": "Currency",
+          "mandatory": "0",
+          "type": "A",
+          "name": "CUCD",
+          "length": "3"
+        },
+        {
+          "length": "3",
+          "name": "AMTN",
+          "mandatory": "0",
+          "descr": "Curve",
+          "type": "N"
+        }
+      ]
+    },
+    {
+      "name": "O",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "length": "3",
+          "descr": "Company",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "descr": "Division",
+          "mandatory": "0",
+          "type": "A",
+          "name": "DIVI",
+          "length": "3"
+        },
+        {
+          "type": "N",
+          "name": "BUNO",
+          "descr": "Budget number",
+          "length": "3",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Budget version",
+          "name": "BVER",
+          "mandatory": "0",
+          "length": "4",
+          "type": "A"
+        },
+        {
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Accounting dimension 1",
+          "name": "AIT1",
+          "length": "10"
+        },
+        {
+          "name": "AIT2",
+          "descr": "Accounting dimension 2",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "type": "A",
+          "mandatory": "0",
+          "descr": "Accounting dimension 3",
+          "name": "AIT3",
+          "length": "10"
+        },
+        {
+          "type": "A",
+          "name": "AIT4",
+          "length": "10",
+          "descr": "Accounting dimension 4",
+          "mandatory": "0"
+        },
+        {
+          "type": "A",
+          "descr": "Accounting dimension 5",
+          "name": "AIT5",
+          "length": "10",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "length": "10",
+          "type": "A",
+          "name": "AIT6",
+          "descr": "Accounting dimension 6"
+        },
+        {
+          "mandatory": "0",
+          "length": "10",
+          "descr": "Accounting dimension 7",
+          "type": "A",
+          "name": "AIT7"
+        },
+        {
+          "name": "CUCD",
+          "mandatory": "0",
+          "descr": "Currency",
+          "type": "A",
+          "length": "3"
+        },
+        {
+          "name": "AMTN",
+          "descr": "Curve",
+          "type": "N",
+          "length": "3",
+          "mandatory": "0"
+        },
+        {
+          "type": "N",
+          "mandatory": "0",
+          "name": "BLAM",
+          "descr": "Local currency amount - budget",
+          "length": "17"
+        },
+        {
+          "length": "11",
+          "descr": "Budget quantity",
+          "name": "BUDQ",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "type": "N",
+          "name": "BCUA",
+          "descr": "Foreign currency amount - budget",
+          "length": "17",
+          "mandatory": "0"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "descr": "Company",
+          "length": "3",
+          "name": "CONO",
+          "type": "N",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Division",
+          "type": "A",
+          "length": "3",
+          "name": "DIVI",
+          "mandatory": "1"
+        },
+        {
+          "name": "BUNO",
+          "length": "3",
+          "mandatory": "1",
+          "descr": "Budget number",
+          "type": "N"
+        },
+        {
+          "mandatory": "1",
+          "descr": "Budget version",
+          "length": "4",
+          "name": "BVER",
+          "type": "A"
+        },
+        {
+          "type": "A",
+          "mandatory": "1",
+          "name": "AIT1",
+          "length": "10",
+          "descr": "Accounting dimension 1"
+        },
+        {
+          "type": "A",
+          "length": "10",
+          "name": "AIT2",
+          "mandatory": "0",
+          "descr": "Accounting dimension 2"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Accounting dimension 3",
+          "name": "AIT3",
+          "length": "10",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "type": "A",
+          "descr": "Accounting dimension 4",
+          "mandatory": "0",
+          "name": "AIT4"
+        },
+        {
+          "length": "10",
+          "mandatory": "0",
+          "descr": "Accounting dimension 5",
+          "name": "AIT5",
+          "type": "A"
+        },
+        {
+          "descr": "Accounting dimension 6",
+          "mandatory": "0",
+          "type": "A",
+          "name": "AIT6",
+          "length": "10"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Accounting dimension 7",
+          "name": "AIT7",
+          "type": "A",
+          "length": "10"
+        },
+        {
+          "length": "3",
+          "mandatory": "1",
+          "type": "A",
+          "name": "CUCD",
+          "descr": "Currency"
+        },
+        {
+          "descr": "Curve",
+          "mandatory": "0",
+          "type": "N",
+          "name": "AMTN",
+          "length": "3"
+        },
+        {
+          "mandatory": "1",
+          "type": "N",
+          "name": "BUPE",
+          "length": "6",
+          "descr": "Budget period"
+        }
+      ]
+    },
+    {
+      "name": "O",
+      "descr": "Input",
+      "data": [
+        {
+          "type": "N",
+          "length": "3",
+          "name": "CONO",
+          "descr": "Company",
+          "mandatory": "0"
+        },
+        {
+          "name": "DIVI",
+          "descr": "Division",
+          "length": "3",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "name": "BUNO",
+          "mandatory": "0",
+          "descr": "Budget number",
+          "length": "3",
+          "type": "N"
+        },
+        {
+          "name": "BVER",
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Budget version",
+          "length": "4"
+        },
+        {
+          "descr": "Accounting dimension 1",
+          "length": "10",
+          "name": "AIT1",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "descr": "Accounting dimension 2",
+          "type": "A",
+          "mandatory": "0",
+          "name": "AIT2"
+        },
+        {
+          "type": "A",
+          "name": "AIT3",
+          "descr": "Accounting dimension 3",
+          "length": "10",
+          "mandatory": "0"
+        },
+        {
+          "type": "A",
+          "mandatory": "0",
+          "descr": "Accounting dimension 4",
+          "length": "10",
+          "name": "AIT4"
+        },
+        {
+          "length": "10",
+          "mandatory": "0",
+          "descr": "Accounting dimension 5",
+          "name": "AIT5",
+          "type": "A"
+        },
+        {
+          "name": "AIT6",
+          "descr": "Accounting dimension 6",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "type": "A",
+          "descr": "Accounting dimension 7",
+          "name": "AIT7",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "type": "A",
+          "descr": "Currency",
+          "length": "3",
+          "name": "CUCD"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Curve",
+          "type": "N",
+          "length": "3",
+          "name": "AMTN"
+        },
+        {
+          "name": "BCUA",
+          "length": "17",
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget",
+          "type": "N"
+        },
+        {
+          "type": "N",
+          "name": "BUDQ",
+          "length": "11",
+          "descr": "Budget quantity",
+          "mandatory": "0"
+        },
+        {
+          "name": "TX15",
+          "length": "15",
+          "descr": "Name",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "descr": "From date",
+          "mandatory": "0",
+          "length": "10",
+          "type": "D",
+          "name": "FDAT"
+        },
+        {
+          "length": "10",
+          "descr": "To date",
+          "mandatory": "0",
+          "name": "TDAT",
+          "type": "D"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "length": "3",
+          "descr": "Company",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "mandatory": "1",
+          "descr": "Division",
+          "name": "DIVI",
+          "type": "A",
+          "length": "3"
+        },
+        {
+          "name": "BUNO",
+          "descr": "Budget number",
+          "mandatory": "1",
+          "type": "N",
+          "length": "3"
+        },
+        {
+          "length": "4",
+          "mandatory": "1",
+          "type": "A",
+          "descr": "Budget version",
+          "name": "BVER"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "mandatory": "0",
+          "descr": "Company",
+          "name": "CONO",
+          "type": "N",
+          "length": "3"
+        },
+        {
+          "name": "DIVI",
+          "mandatory": "1",
+          "descr": "Division",
+          "length": "3",
+          "type": "A"
+        },
+        {
+          "name": "BUNO",
+          "mandatory": "1",
+          "descr": "Budget number",
+          "length": "3",
+          "type": "N"
+        },
+        {
+          "mandatory": "1",
+          "name": "BVER",
+          "descr": "Budget version",
+          "type": "A",
+          "length": "4"
+        },
+        {
+          "name": "TX40",
+          "descr": "Description",
+          "length": "40",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "length": "15",
+          "name": "TX15",
+          "descr": "Name",
+          "type": "A",
+          "mandatory": "0"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Start period - budget",
+          "name": "BSPR",
+          "length": "6",
+          "type": "N"
+        },
+        {
+          "descr": "Exchange rate type",
+          "type": "N",
+          "length": "2",
+          "mandatory": "0",
+          "name": "CRTP"
+        },
+        {
+          "length": "3",
+          "mandatory": "0",
+          "name": "NPAM",
+          "descr": "Number of periods",
+          "type": "N"
+        },
+        {
+          "descr": "Rounding-off category",
+          "type": "N",
+          "mandatory": "0",
+          "name": "ROPP",
+          "length": "2"
+        },
+        {
+          "mandatory": "0",
+          "type": "N",
+          "length": "1",
+          "name": "UPDB",
+          "descr": "Update balance file"
+        },
+        {
+          "name": "DTMP",
+          "descr": "Allocation template",
+          "type": "A",
+          "mandatory": "0",
+          "length": "8"
+        },
+        {
+          "length": "10",
+          "type": "A",
+          "descr": "Object access group",
+          "name": "ACGR",
+          "mandatory": "0"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "descr": "Company",
+          "type": "N",
+          "name": "CONO",
+          "mandatory": "0",
+          "length": "3"
+        },
+        {
+          "mandatory": "1",
+          "descr": "Division",
+          "name": "DIVI",
+          "length": "3",
+          "type": "A"
+        },
+        {
+          "type": "N",
+          "name": "BUNO",
+          "length": "3",
+          "descr": "Budget number",
+          "mandatory": "1"
+        },
+        {
+          "type": "A",
+          "name": "BVER",
+          "length": "4",
+          "mandatory": "1",
+          "descr": "Budget version"
+        },
+        {
+          "type": "A",
+          "mandatory": "1",
+          "descr": "Accounting dimension 1",
+          "name": "AIT1",
+          "length": "10"
+        },
+        {
+          "type": "A",
+          "mandatory": "0",
+          "name": "AIT2",
+          "descr": "Accounting dimension 2",
+          "length": "10"
+        },
+        {
+          "name": "AIT3",
+          "descr": "Accounting dimension 3",
+          "length": "10",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "descr": "Accounting dimension 4",
+          "mandatory": "0",
+          "type": "A",
+          "name": "AIT4",
+          "length": "10"
+        },
+        {
+          "mandatory": "0",
+          "name": "AIT5",
+          "type": "A",
+          "length": "10",
+          "descr": "Accounting dimension 5"
+        },
+        {
+          "descr": "Accounting dimension 6",
+          "name": "AIT6",
+          "mandatory": "0",
+          "type": "A",
+          "length": "10"
+        },
+        {
+          "name": "AIT7",
+          "length": "10",
+          "mandatory": "0",
+          "descr": "Accounting dimension 7",
+          "type": "A"
+        },
+        {
+          "name": "CUCD",
+          "mandatory": "1",
+          "type": "A",
+          "length": "3",
+          "descr": "Currency"
+        },
+        {
+          "mandatory": "0",
+          "type": "N",
+          "name": "AMTN",
+          "length": "3",
+          "descr": "Curve"
+        },
+        {
+          "descr": "Total Foreign currency amount - budget",
+          "name": "BCUA",
+          "length": "17",
+          "type": "N",
+          "mandatory": "0"
+        },
+        {
+          "name": "BUDQ",
+          "type": "N",
+          "descr": "Total Budget quantity",
+          "mandatory": "0",
+          "length": "11"
+        },
+        {
+          "name": "BCU1",
+          "descr": "Foreign currency amount - budget 1",
+          "type": "N",
+          "mandatory": "0",
+          "length": "17"
+        },
+        {
+          "descr": "Foreign currency amount - budget 2",
+          "type": "N",
+          "length": "17",
+          "name": "BCU2",
+          "mandatory": "0"
+        },
+        {
+          "name": "BCU3",
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget 3",
+          "type": "N",
+          "length": "17"
+        },
+        {
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Foreign currency amount - budget 4",
+          "length": "17",
+          "name": "BCU4"
+        },
+        {
+          "descr": "Foreign currency amount - budget 5",
+          "length": "17",
+          "mandatory": "0",
+          "name": "BCU5",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget 6",
+          "name": "BCU6",
+          "length": "17",
+          "type": "N"
+        },
+        {
+          "name": "BCU7",
+          "descr": "Foreign currency amount - budget 7",
+          "length": "17",
+          "type": "N",
+          "mandatory": "0"
+        },
+        {
+          "name": "BCU8",
+          "descr": "Foreign currency amount - budget 8",
+          "length": "17",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "type": "N",
+          "descr": "Foreign currency amount - budget 9",
+          "length": "17",
+          "mandatory": "0",
+          "name": "BCU9"
+        },
+        {
+          "descr": "Foreign currency amount - budget 10",
+          "type": "N",
+          "mandatory": "0",
+          "name": "BC10",
+          "length": "17"
+        },
+        {
+          "descr": "Foreign currency amount - budget 11",
+          "length": "17",
+          "name": "BC11",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "type": "N",
+          "length": "17",
+          "name": "BC12",
+          "mandatory": "0",
+          "descr": "Foreign currency amount - budget 12"
+        },
+        {
+          "length": "17",
+          "descr": "Foreign currency amount - budget 13",
+          "type": "N",
+          "name": "BC13",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Foreign currency amount - budget 14",
+          "length": "17",
+          "mandatory": "0",
+          "name": "BC14",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "length": "17",
+          "type": "N",
+          "name": "BC15",
+          "descr": "Foreign currency amount - budget 15"
+        },
+        {
+          "name": "BUD1",
+          "type": "N",
+          "length": "11",
+          "descr": "Budget quantity 1",
+          "mandatory": "0"
+        },
+        {
+          "type": "N",
+          "descr": "Budget quantity 2",
+          "name": "BUD2",
+          "length": "11",
+          "mandatory": "0"
+        },
+        {
+          "descr": "Budget quantity 3",
+          "length": "11",
+          "mandatory": "0",
+          "type": "N",
+          "name": "BUD3"
+        },
+        {
+          "mandatory": "0",
+          "type": "N",
+          "length": "11",
+          "name": "BUD4",
+          "descr": "Budget quantity 4"
+        },
+        {
+          "name": "BUD5",
+          "length": "11",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Budget quantity 5"
+        },
+        {
+          "length": "11",
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Budget quantity 6",
+          "name": "BUD6"
+        },
+        {
+          "type": "N",
+          "length": "11",
+          "mandatory": "0",
+          "name": "BUD7",
+          "descr": "Budget quantity 7"
+        },
+        {
+          "length": "11",
+          "type": "N",
+          "name": "BUD8",
+          "descr": "Budget quantity 8",
+          "mandatory": "0"
+        },
+        {
+          "length": "11",
+          "name": "BUD9",
+          "type": "N",
+          "descr": "Budget quantity 9",
+          "mandatory": "0"
+        },
+        {
+          "type": "N",
+          "name": "BU10",
+          "length": "11",
+          "descr": "Budget quantity 10",
+          "mandatory": "0"
+        },
+        {
+          "name": "BU11",
+          "descr": "Budget quantity 11",
+          "length": "11",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "length": "11",
+          "name": "BU12",
+          "type": "N",
+          "descr": "Budget quantity 12"
+        },
+        {
+          "descr": "Budget quantity 13",
+          "mandatory": "0",
+          "name": "BU13",
+          "length": "11",
+          "type": "N"
+        },
+        {
+          "mandatory": "0",
+          "descr": "Budget quantity 14",
+          "type": "N",
+          "length": "11",
+          "name": "BU14"
+        },
+        {
+          "length": "11",
+          "mandatory": "0",
+          "type": "N",
+          "name": "BU15",
+          "descr": "Budget quantity 15"
+        }
+      ]
+    },
+    {
+      "name": "I",
+      "descr": "Input",
+      "data": [
+        {
+          "name": "CONO",
+          "length": "3",
+          "type": "N",
+          "mandatory": "0",
+          "descr": "Company"
+        },
+        {
+          "mandatory": "1",
+          "descr": "Division",
+          "length": "3",
+          "name": "DIVI",
+          "type": "A"
+        },
+        {
+          "mandatory": "1",
+          "type": "N",
+          "name": "BUNO",
+          "descr": "Budget number",
+          "length": "3"
+        },
+        {
+          "descr": "Budget version",
+          "name": "BVER",
+          "length": "4",
+          "type": "A",
+          "mandatory": "1"
+        },
+        {
+          "length": "10",
+          "descr": "Accounting dimension 1",
+          "name": "AIT1",
+          "mandatory": "1",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "mandatory": "0",
+          "name": "AIT2",
+          "type": "A",
+          "descr": "Accounting dimension 2"
+        },
+        {
+          "length": "10",
+          "name": "AIT3",
+          "descr": "Accounting dimension 3",
+          "mandatory": "0",
+          "type": "A"
+        },
+        {
+          "length": "10",
+          "type": "A",
+          "mandatory": "0",
+          "name": "AIT4",
+          "descr": "Accounting dimension 4"
+        },
+        {
+          "type": "A",
+          "name": "AIT5",
+          "descr": "Accounting dimension 5",
+          "mandatory": "0",
+          "length": "10"
+        },
+        {
+          "type": "A",
+          "length": "10",
+          "name": "AIT6",
+          "mandatory": "0",
+          "descr": "Accounting dimension 6"
+        },
+        {
+          "descr": "Accounting dimension 7",
+          "length": "10",
+          "type": "A",
+          "mandatory": "0",
+          "name": "AIT7"
+        },
+        {
+          "length": "3",
+          "descr": "Currency",
+          "mandatory": "1",
+          "type": "A",
+          "name": "CUCD"
+        },
+        {
+          "name": "AMTN",
+          "descr": "Curve",
+          "length": "3",
+          "mandatory": "0",
+          "type": "N"
+        },
+        {
+          "length": "6",
+          "name": "BUPE",
+          "mandatory": "1",
+          "type": "N",
+          "descr": "Budget period"
+        },
+        {
+          "mandatory": "0",
+          "type": "N",
+          "descr": "Foreign currency amount - budget",
+          "length": "17",
+          "name": "BCUA"
+        },
+        {
+          "type": "N",
+          "descr": "Budget quantity",
+          "mandatory": "0",
+          "name": "BUDQ",
+          "length": "11"
+        }
+      ]
+    }
+  ]
+}
