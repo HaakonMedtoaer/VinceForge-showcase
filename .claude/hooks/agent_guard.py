@@ -62,7 +62,6 @@ ALLOWED_WRITE_DIRS = [
 CONFIRM_PATTERNS = [
     (r"\b(rm|del|rmdir|Remove-Item|erase)\b", "deletes files"),
     (r"api\.vince\.live", "calls the Vince Live API directly"),
-    (r"\bsync_(matrix|pages)\.py\b(?!.*(--check|--dry-run))", "publishes to Notion"),
     (r"\bcli\.py\s+app-import\b(?!.*--dry-run)", "real (non-dry) app import into a tenant"),
 ]
 

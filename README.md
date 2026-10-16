@@ -1,5 +1,92 @@
 # VinceForge
 
+A migration tool that turns a legacy integration product's configuration
+files into working workflows on its successor platform, and creates them
+in a customer's environment through the platform's API.
+
+## The problem
+
+Vince makes tools that connect Excel to **Infor M3**, an ERP system used by
+manufacturers and distributors. Customers on the older product, **VXL
+Classic**, are moving to the newer workflow platform, **Vince Live**. Each
+customer has many Classic "functions" (XML files describing which M3 calls
+to make and where the results go in a spreadsheet). Until now, every one of
+them had to be rebuilt by hand in Live's visual builder.
+
+Three things made automating this hard:
+
+- **The target format was undocumented.** Live's workflow JSON isn't
+  publicly specified in the detail you need to generate it, so it had to be
+  worked out from real examples and real API responses.
+- **The two products don't map one-to-one.** Filters, grouping, chained
+  calls and multi-block files behave differently, and a careless conversion
+  can run *silently* wrong: for example, writing to the ERP for rows the old
+  tool would have skipped.
+- **Mistakes land in a customer's production ERP.** Anything that writes
+  needs guard rails.
+
+## What it does
+
+- **Converts** Classic XML into Live workflows. It picks between two
+  strategies per block: the platform's native M3 step when that can express
+  the logic, or a generated JavaScript step calling M3's REST API when it
+  can't.
+- **Imports whole apps.** It takes a folder of Classic files, workflow JSON,
+  table definitions and Excel design files, and creates everything in a
+  tenant in one run, grouped by source file.
+- **Inspects runs.** It reads what workflows actually did in Live, step by
+  step, or sweeps a whole tenant for failures.
+- **Comes with a local web UI and a CLI.** Every write goes through a
+  confirmation step that names the target tenant and checks that the
+  credentials really belong to it.
+
+## How it was built
+
+I built it with **Claude Code** (Anthropic's AI coding agent) as a
+development partner, under one rule: **the AI may never guess the target
+format.** Every structural fact had to come from something built in the
+platform's UI or a real API call. Anything unproven is reported loudly in
+the output instead of being papered over. A few things that came out of
+that rule:
+
+- **Verified facts, written down.** The findings live in
+  [docs/](docs/), a [JSON Schema](schemas/live-workflow.schema.json) with
+  the gotchas in its descriptions, and a [portable Claude
+  skill](.claude/skills/vince-live-workflow/SKILL.md) that other people's AI
+  sessions can use. Material that turned out to be unreliable is kept
+  separately in [docs-unverified/](docs-unverified/), with the story of why.
+- **No silent loss.** Anything the converter can't carry becomes a warning
+  or a `_needs_review` flag before anything is created. Several real bugs
+  were found because a conversion that *looked* right was checked against
+  an actual run.
+- **A capability matrix that can't go stale.**
+  [docs/vinceforge-capability-matrix.md](docs/vinceforge-capability-matrix.md)
+  says, per construct, what converts, what degrades and what needs manual
+  work. It is generated from data, every row names the code that enforces
+  it, and a self-test fails if the code and the matrix disagree.
+- **Tested.** 11 self-test suites (119 tests) run on the Python standard
+  library. Generated JavaScript is executed under Node against a fake ERP,
+  so the tests check behaviour, not just shape.
+- **Guard rails for the AI as well.** A
+  [pre-tool hook](.claude/hooks/agent_guard.py) blocks dangerous shell
+  commands and asks for confirmation before deletions or writes to the live
+  API. A [pre-push hook](.githooks/pre-push) has Claude audit each push's
+  diff for leaked credentials and obvious bugs, and blocks the push if it
+  finds one.
+
+**Stack:** Python 3 standard library only (no `pip install`), about 19,500
+lines including tests, plus about 7,800 lines of documentation. The web UI
+is a single stdlib HTTP server with no framework.
+
+> **Note:** this is a cleaned copy for showcase purposes. Customer files,
+> real tenant identifiers and internal references have been removed or
+> replaced with placeholders. Running it for real requires access to a
+> Vince Live tenant and an Infor M3 environment.
+
+---
+
+## Technical overview
+
 Builds **Vince Live** workflows (the `POST /workflows` JSON) from existing
 material, and imports whole apps into a Live tenant. Built for migrating
 customers from VXL Classic to Vince Live.
